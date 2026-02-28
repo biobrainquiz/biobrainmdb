@@ -127,11 +127,6 @@ app.get("/quiz/:examcode/:subjectcode/:unitcode/:topiccode/start", requireLogin,
     { $sample: { size: parseInt(count) } }
   ]);
 
-  const topic = await Topic.aggregate([
-    { $match: { examcode: examcode, subjectcode: subjectcode, unitcode: unitcode, topiccode: topiccode} },
-    { $sample: { size: q } }
-  ]);
-
   console.log(topic.topicname);
   res.render(`pages/${getDevice(req)}/quiz`, 
   { questions, examcode, subjectcode, unitcode, topiccode, user: req.session.user, count, difficulty });
@@ -159,6 +154,7 @@ app.get("/preparequiz/:examcode/:subjectcode", requireLogin, async (req, res) =>
 
     const totalPages = Math.ceil(Math.min(totalResults, resultsLimit) / pageLimit);
 
+   
     res.render(`pages/${device}/startquiz`, { examcode, subjectcode, quizResults, currentPage: page, totalPages });
 
   } catch (err) {
