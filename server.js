@@ -126,7 +126,6 @@ app.get("/quiz/:examcode/:subjectcode/:unitcode/:topiccode/start", requireLogin,
     { $match: { examcode:examcode, subjectcode:subjectcode, unitcode:unitcode,topiccode:topiccode,difficulty_level: difficulty } },
     { $sample: { size: parseInt(count) } }
   ]);
-  console.log(questions);
   res.render(`pages/${getDevice(req)}/quiz`, { questions, examcode, subjectcode,unitcode,topiccode, user: req.session.user, count, difficulty });
 });
 
