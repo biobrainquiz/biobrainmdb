@@ -1,62 +1,62 @@
 [
   {
+    "examcode": "E1",
+    "subjectcode": "S1",
+    "unitcode": "U1",
+    "unitname": "Animal Diversity"
+  },
+  {
+    "examcode": "E1",
+    "subjectcode": "S1",
+    "unitcode": "U2",
+    "unitname": "Animal Physiology"
+  },
+  {
+    "examcode": "E1",
+    "subjectcode": "S2",
+    "unitcode": "U1",
+    "unitname": "Plant Morphology"
+  },
+  {
+    "examcode": "E1",
+    "subjectcode": "S2",
+    "unitcode": "U2",
+    "unitname": "Plant Physiology"
+  },
+  {
     "examcode": "E2",
     "subjectcode": "S1",
     "unitcode": "U1",
-    "unitname": "Diversity of the Animal Kingdom"
+    "unitname": "Mechanics"
   },
   {
     "examcode": "E2",
     "subjectcode": "S1",
     "unitcode": "U2",
-    "unitname": "Cell Biology and Molecular Biology"
+    "unitname": "Electromagnetism"
   },
   {
     "examcode": "E2",
-    "subjectcode": "S1",
-    "unitcode": "U3",
-    "unitname": "Genetics and Evolution"
+    "subjectcode": "S2",
+    "unitcode": "U1",
+    "unitname": "Organic Chemistry"
   },
   {
     "examcode": "E2",
-    "subjectcode": "S1",
-    "unitcode": "U4",
-    "unitname": "Developmental Biology"
+    "subjectcode": "S2",
+    "unitcode": "U2",
+    "unitname": "Inorganic Chemistry"
   },
   {
-    "examcode": "E2",
+    "examcode": "E3",
     "subjectcode": "S1",
-    "unitcode": "U5",
-    "unitname": "Ecology and Environment"
+    "unitcode": "U1",
+    "unitname": "Algebra"
   },
   {
-    "examcode": "E2",
+    "examcode": "E3",
     "subjectcode": "S1",
-    "unitcode": "U6",
-    "unitname": "Animal Physiology"
-  },
-  {
-    "examcode": "E2",
-    "subjectcode": "S1",
-    "unitcode": "U7",
-    "unitname": "Biochemistry and Biophysics"
-  },
-  {
-    "examcode": "E2",
-    "subjectcode": "S1",
-    "unitcode": "U8",
-    "unitname": "Immunology and Microbiology"
-  },
-  {
-    "examcode": "E2",
-    "subjectcode": "S1",
-    "unitcode": "U9",
-    "unitname": "Endocrinology"
-  },
-  {
-    "examcode": "E2",
-    "subjectcode": "S1",
-    "unitcode": "U10",
-    "unitname": "Neurobiology and Behavior"
+    "unitcode": "U2",
+    "unitname": "Calculus"
   }
 ]
