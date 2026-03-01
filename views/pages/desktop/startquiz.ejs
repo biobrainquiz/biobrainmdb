@@ -6,7 +6,7 @@
     <title>BioBrain - Prepare Quiz</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/desktopStyle.css">
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             background: #f4f6f9;
@@ -421,9 +421,15 @@
                     </form>
                 </div>
 
+
                 <div class="card half-card">
-                    <h4>📈 Dashboard</h4>
-                    <p>Coming soon...</p>
+                    <h4>📈 Performance Dashboard</h4>
+
+                    <% if (quizResults && quizResults.length> 0) { %>
+                        <canvas id="performanceChart" height="200"></canvas>
+                        <% } else { %>
+                            <p>No data available for chart.</p>
+                            <% } %>
                 </div>
 
             </div>
@@ -530,7 +536,69 @@
                         topicDropdown.setOptions(topics, "topicname", "topiccode");
                     });
             </script>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
 
+    <% if (quizResults && quizResults.length > 0) { %>
+
+    const labels = [
+        <% quizResults.slice().reverse().forEach(function (q, index) { %>
+                    "<%= new Date(q.createdAt).toLocaleDateString() %>" <%= index < quizResults.length - 1 ? "," : "" %>
+        <% }) %>
+    ];
+
+                        const accuracyData = [
+        <% quizResults.slice().reverse().forEach(function (q, index) { %>
+            <%= q.accuracy %><%= index < quizResults.length - 1 ? "," : "" %>
+        <% }) %>
+    ];
+
+                        const ctx = document.getElementById("performanceChart").getContext("2d");
+
+                        new Chart(ctx, {
+                            type: "line",
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    label: "Accuracy %",
+                                    data: accuracyData,
+                                    tension: 0.4,
+                                    fill: true,
+                                    borderWidth: 2,
+                                    pointRadius: 4,
+                                    borderColor: "#1B5E20",
+                                    backgroundColor: "rgba(27,94,32,0.1)"
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    legend: {
+                                        display: true
+                                    }
+                                },
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        max: 100,
+                                        title: {
+                                            display: true,
+                                            text: "Accuracy (%)"
+                                        }
+                                    },
+                                    x: {
+                                        title: {
+                                            display: true,
+                                            text: "Quiz Date"
+                                        }
+                                    }
+                                }
+                            }
+                        });
+
+    <% } %>
+});
+            </script>
 </body>
 
 </html>
