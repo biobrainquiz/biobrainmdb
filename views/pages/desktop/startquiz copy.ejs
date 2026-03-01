@@ -518,16 +518,11 @@
                 const unitDropdown = setupDropdown("unitWrapper", "unitHidden");
                 const topicDropdown = setupDropdown("topicWrapper", "topicHidden");
 
-                // spinner
-                const unitSpinner = document.getElementById("unitSpinner");
-                const topicSpinner = document.getElementById("topicSpinner");
+                
 
                 window.addEventListener("DOMContentLoaded", async () => {
-                    // unit spinner
-                    unitSpinner.style.display="block";
                     const res = await fetch(`/api/units/${examcode}/${subjectcode}`);
                     const units = await res.json();
-                    unitSpinner.style.display="none";
                     unitDropdown.setOptions(units, "unitname", "unitcode");
                 });
 

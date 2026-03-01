@@ -14,6 +14,7 @@ const Unit = require("./models/Unit");
 const Topic = require("./models/Topic");
 const Exam = require("./models/Exam");
 const escapeHtml = require("./utils/htmlHelpers");
+const getDevice = require("./utils/getDevice");
 
 const app = express();
 
@@ -73,14 +74,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(useragent.express());
 
-/* ==============================
-   Device Detection Helper
-============================== */
-function getDevice(req) {
-  if (req.useragent.isMobile) return "mobile";
-  if (req.useragent.isTablet) return "tablet";
-  return "desktop";
-}
 
 /* ==============================
    Page Routes
@@ -103,9 +96,9 @@ footerPages.forEach(page => {
 });
 
 // Protected Pages
-app.get("/profile", requireLogin, (req, res) => {
-  res.render(`pages/${getDevice(req)}/profile`);
-});
+//app.get("/profile", requireLogin, (req, res) => {
+//  res.render(`pages/${getDevice(req)}/profile`);
+//});
 
 app.get("/leaderboard", requireLogin, (req, res) => {
   res.render(`pages/${getDevice(req)}/leaderboard`);
@@ -236,12 +229,22 @@ app.use("/api", require("./routes/register"));
 app.use("/api", require("./routes/login"));
 app.use("/api", require("./routes/forgot"));
 app.use("/api/quiz", require("./routes/quiz"));
+app.use("/", require("./routes/profile"));
 
 /* ==============================
    404 Handler
 ============================== */
 app.use((req, res) => {
   res.status(404).render("404");
+});
+
+app.get("/keep-session-alive", (req, res) => {
+  if (req.session.user) {
+    // touch the session to reset expiry
+    req.session.touch();
+    return res.sendStatus(200);
+  }
+  res.sendStatus(401);
 });
 
 /* ==============================
