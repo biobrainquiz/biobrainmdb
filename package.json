@@ -20,6 +20,7 @@
     "express": "^5.2.1",
     "express-session": "^1.19.0",
     "express-useragent": "^2.1.0",
+    "lodash": "^4.17.23",
     "mongodb": "^7.1.0",
     "mongoose": "^9.2.1",
     "nodemailer": "^8.0.1",

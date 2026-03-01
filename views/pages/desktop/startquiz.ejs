@@ -257,7 +257,7 @@
     <%- include('../../partials/desktop/header') %>
 
         <section class="section">
-
+            <!-- card for displaying 50 Past performances-->
             <div class="card">
                 <h4>📊 Your Last 50 Quiz Performances</h4>
 
@@ -279,6 +279,7 @@
                                     <th>Accuracy</th>
                                 </tr>
                             </thead>
+
                             <tbody>
                                 <% quizResults.forEach((q,index)=>{ %>
                                     <tr>
@@ -287,19 +288,33 @@
                                         </td>
                                         <td>
                                             <%= new Date(q.createdAt).toLocaleDateString() %>
+                                            <%= new Date(q.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %>
                                         </td>
                                         <td>
-                                            <%= q.examcode %>
+                                            <%= q.examName %>
                                         </td>
                                         <td>
-                                            <%= q.subjectcode %>
+                                            <%= q.subjectName %>
+                                        </td>
+
+                                        <!-- Truncated unitName with tooltip -->
+                                        <td title="<%= q.unitName %>">
+                                            <%= q.unitName.length> 15 ? q.unitName.slice(0,15) + '...' : q.unitName %>
+                                        </td>
+
+                                        <!-- Truncated topicName with tooltip -->
+                                        <td title="<%= q.topicName %>">
+                                            <%= q.topicName.length> 20 ? q.topicName.slice(0,20) + '...' : q.topicName
+                                                %>
+                                        </td>
+
+                                        <!--
+                                        <td>
+                                            <%= q.unitName %>
                                         </td>
                                         <td>
-                                            <%= q.unitcode %>
-                                        </td>
-                                        <td>
-                                            <%= q.topiccode %>
-                                        </td>
+                                            <%= q.topicName %>
+                                        </td>-->
                                         <td>
                                             <%= q.difficulty %>
                                         </td>
@@ -369,7 +384,7 @@
             </div>
 
             <div class="card-row">
-
+                <!-- card for configuring Quiz-->
                 <div class="card half-card">
                     <h4>⚙ Configure Your Quiz</h4>
 
@@ -420,8 +435,7 @@
                         <p id="formError" style="color:red; display:none; font-size:13px;"></p>
                     </form>
                 </div>
-
-
+                <!-- card for Performance Dashboard-->
                 <div class="card half-card">
                     <h4>📈 Performance Dashboard</h4>
 
@@ -431,13 +445,12 @@
                             <p>No data available for chart.</p>
                             <% } %>
                 </div>
-
             </div>
         </section>
-
         <%- include('../../partials/desktop/footer') %>
 
             <script>
+                // Script for validating unit,topic,count,difficulty before submit
                 const form = document.querySelector("form");
                 form.addEventListener("submit", function (e) {
                     const errorBox = document.getElementById("formError");
@@ -459,6 +472,7 @@
             </script>
 
             <script>
+                //script for filling unit,topic dropdowns
                 const examcode = "<%= examcode %>";
                 const subjectcode = "<%= subjectcode %>";
 
@@ -537,8 +551,8 @@
                     });
             </script>
 
-            <!-- Graph-->
             <script>
+                // script for displaying graph that renders users performance
                 document.addEventListener("DOMContentLoaded", function () {
 
 <% if (allResults && allResults.length > 1) { %>

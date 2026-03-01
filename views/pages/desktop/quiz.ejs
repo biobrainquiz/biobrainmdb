@@ -138,22 +138,49 @@
       font-weight: bold;
       margin-bottom: 15px;
     }
+
+    .breadcrumb-wrapper {
+  display: inline-block;
+  background-color: #f5f5f5;  /* optional light background for contrast */
+  padding: 2px 4px;           /* optional small padding */
+  border-radius: 3px;          /* rounded corners */
+}
+
+.breadcrumb {
+  font-weight: 400;            /* normal weight */
+  color: #111 !important;      /* dark black, force override */
+}
+
+.breadcrumb .truncate {
+  font-weight: 400;
+  color: #000 !important;      /* pure black for truncated names */
+}
   </style>
 </head>
 
 <body>
 
   <header>
+
+
     <div>
-      Hello, <%= user.username %> 👋 | BioBrain - Examination Portal on
-        <%= examcode %>
-          • <%= subjectcode %>
-            • <%= unitcode %>
-              • <%= topiccode%>
-                • <%= count %> Questions
-                  • <%= difficulty.charAt(0).toUpperCase() + difficulty.slice(1) %> Level
-    </div>
+  Hello, <%= user.username %> 👋 | Examination Portal |
+  <span class="breadcrumb-wrapper">
+    <span class="breadcrumb">
+      <%= examName %> &gt; <%= subjectName %> &gt;
+      <span class="truncate" title="<%= unitName %>">
+        <%= unitName.length > 15 ? unitName.slice(0, 15) + '...' : unitName %>
+      </span> &gt;
+      <span class="truncate" title="<%= topicName %>">
+        <%= topicName.length > 20 ? topicName.slice(0, 20) + '...' : topicName %>
+      </span>
+    </span>
+  </span>
+   <%= count %> Questions • <%= difficulty.charAt(0).toUpperCase() + difficulty.slice(1) %> Level
+</div>
+
     <div>Time Left: <span id="timer">00:00</span></div>
+
   </header>
 
   <div class="container">
@@ -306,7 +333,7 @@
               subjectcode: "<%= subjectcode %>",
               unitcode: "<%= unitcode %>",
               topiccode: "<%= topiccode %>",
-              difficulty:"<%=  difficulty%>"
+              difficulty: "<%=  difficulty%>"
             }) // send answers + questions
           });
 
@@ -338,4 +365,5 @@
   </script>
 
 </body>
+
 </html>

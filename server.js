@@ -5,13 +5,15 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo").default;
 const useragent = require("express-useragent");
 const path = require("path");
-
+const mapCodesToNames = require("./utils/mapCodesToNames");
 const { autoSeed } = require("./utils/autoSeeder");
 const requireLogin = require("./middleware/requireLogin");
 const QuizResult = require("./models/QuizResult");
 const Question = require("./models/Question");
 const Unit = require("./models/Unit");
 const Topic = require("./models/Topic");
+const Exam = require("./models/Exam");
+const escapeHtml = require("./utils/htmlHelpers");
 
 const app = express();
 
@@ -118,7 +120,7 @@ app.get("/quizzes", requireLogin, (req, res) => {
    Quiz Routes
 ============================== */
 
-// Dynamic quiz start
+// NTA examination
 app.get("/quiz/:examcode/:subjectcode/:unitcode/:topiccode/start", requireLogin, async (req, res) => {
   const { examcode, subjectcode, unitcode, topiccode } = req.params;
   const { count, difficulty } = req.query;
@@ -127,8 +129,14 @@ app.get("/quiz/:examcode/:subjectcode/:unitcode/:topiccode/start", requireLogin,
     { $sample: { size: parseInt(count) } }
   ]);
 
+  const { getExamName, getSubjectName, getUnitName, getTopicName } = require('./utils/getNameByCode');
+  const examName = await getExamName(examcode);
+  const subjectName = await getSubjectName(examcode, subjectcode);
+  const unitName = await getUnitName(examcode, subjectcode, unitcode);
+  const topicName = await getTopicName(examcode, subjectcode, unitcode, topiccode);
+
   res.render(`pages/${getDevice(req)}/quiz`,
-    { questions, examcode, subjectcode, unitcode, topiccode, user: req.session.user, count, difficulty });
+    { questions, examcode, examName, subjectcode, subjectName, unitcode, unitName, topiccode, topicName, user: req.session.user, count, difficulty });
 });
 
 // Prepare quiz (past performance)
@@ -144,18 +152,18 @@ app.get("/preparequiz/:examcode/:subjectcode", requireLogin, async (req, res) =>
 
     // PAGINATED DATA (for table)
     const totalResults = await QuizResult.countDocuments({ username, examcode, subjectcode });
-    const quizResults = await QuizResult.find({ username, examcode, subjectcode })
-      .sort({ createdAt: -1 })
+    quizResults = await QuizResult.find({ username, examcode, subjectcode })
+      .sort({ createdAt: 1 })
       .skip((page - 1) * pageLimit)
       .limit(pageLimit)
       .lean();
     quizResults.forEach(q => q.accuracy = ((q.right / q.noq) * 100).toFixed(2));
+    quizResults = await mapCodesToNames(quizResults);
     const totalPages = Math.ceil(Math.min(totalResults, resultsLimit) / pageLimit);
-
 
     // FULLDATA FOR GRAPH
     const allResults = await QuizResult.find({ username, examcode, subjectcode })
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: 1 });
     allResults.forEach(q => q.accuracy = ((q.right / q.noq) * 100).toFixed(2));
     res.render(`pages/${device}/startquiz`, { examcode, subjectcode, quizResults, currentPage: page, totalPages, allResults });
   } catch (err) {
@@ -174,10 +182,15 @@ app.post("/create-order", requireLogin, (req, res) => {
 app.get("/api/units/:examcode/:subjectcode", requireLogin, async (req, res) => {
   try {
     const { examcode, subjectcode } = req.params;
-    const units = await Unit.find({ examcode, subjectcode })
+    units = await Unit.find({ examcode, subjectcode })
       .sort({ unitcode: 1 })
       .select("unitcode unitname -_id")
       .lean();
+
+    units.forEach(u => {
+      u.unitname = escapeHtml(u.unitname);
+    });
+
     res.json(units);
   } catch (err) {
     console.error(err);
@@ -193,6 +206,9 @@ app.get("/api/topics/:examcode/:subjectcode/:unitcode", requireLogin, async (req
       .select("topiccode topicname -_id")
       .lean();
 
+    topics.forEach(t => {
+      t.topicname = escapeHtml(t.topicname);
+    });
     res.json(topics);
   } catch (err) {
     console.error(err);
