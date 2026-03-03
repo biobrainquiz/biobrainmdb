@@ -2,7 +2,7 @@ const Subject = require("../../models/Subject");
 const Exam = require("../../models/Exam");
 
 exports.list = async (req, res) => {
-  const subjects = await Subject.find().populate("exam");
+  const subjects = await Subject.find();
   res.render(`pages/${getDevice(req)}/admin/subjects`, { subjects });
 };
 

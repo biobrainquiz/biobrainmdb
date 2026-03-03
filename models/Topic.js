@@ -2,11 +2,17 @@ const mongoose = require("mongoose");
 const { validateExistence, cascadeDelete } = require("../utils/dbHelpers");
 
 const topicSchema = new mongoose.Schema({
-    examcode: { type: String, required: true, uppercase: true, ref: "Exam", trim: true },
-    subjectcode: { type: String, required: true, uppercase: true, ref: "Subject", trim: true },
-    unitcode: { type: String, required: true, uppercase: true, ref: "Unit", trim: true },
+    examcode: { type: String, required: true, uppercase: true,trim: true },
+    subjectcode: { type: String, required: true, uppercase: true,trim: true },
+    unitcode: { type: String, required: true, uppercase: true, trim: true },
+   
     topiccode: { type: String, required: true, uppercase: true, trim: true },
-    topicname: { type: String, required: true, trim: true }
+    topicname: { type: String, required: true, trim: true },
+
+    // This enables population
+    exam: { type: mongoose.Schema.Types.ObjectId, ref: "Exam", required: true },
+    subject: { type: mongoose.Schema.Types.ObjectId, ref: "Subject", required: true },
+    unit: { type: mongoose.Schema.Types.ObjectId, ref: "Unit", required: true }
 }, { timestamps: true });
 
 // Compound unique index

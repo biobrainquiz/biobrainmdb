@@ -388,7 +388,7 @@
                 <div class="card half-card">
                     <h4>⚙ Configure Your Quiz</h4>
 
-                    <form action="/create-order" method="POST">
+                    <form action="/createorder" method="POST">
                         <input type="hidden" name="examcode" value="<%= examcode %>">
                         <input type="hidden" name="subjectcode" value="<%= subjectcode %>">
 
@@ -533,7 +533,7 @@
                 const topicDropdown = setupDropdown("topicWrapper", "topicHidden");
 
                 window.addEventListener("DOMContentLoaded", async () => {
-                    const res = await fetch(`/api/units/${examcode}/${subjectcode}`);
+                    const res = await fetch(`/units/${examcode}/${subjectcode}`);
                     const units = await res.json();
                     unitDropdown.setOptions(units, "unitname", "unitcode");
                 });
@@ -545,7 +545,7 @@
                         if (!unitcode) return;
 
                         topicDropdown.enable();
-                        const res = await fetch(`/api/topics/${examcode}/${subjectcode}/${unitcode}`);
+                        const res = await fetch(`/topics/${examcode}/${subjectcode}/${unitcode}`);
                         const topics = await res.json();
                         topicDropdown.setOptions(topics, "topicname", "topiccode");
                     });

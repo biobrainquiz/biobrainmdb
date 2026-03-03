@@ -6,6 +6,8 @@ const examSchema = new mongoose.Schema({
   examcode: { type: String, required: true, unique: true, uppercase: true, trim: true }
 }, { timestamps: true });
 
+module.exports = mongoose.model("Exam", examSchema);
+
 // Cascade delete subjects, units, topics, questions
 examSchema.pre("findOneAndDelete", async function(next) {
   const filter = this.getFilter();

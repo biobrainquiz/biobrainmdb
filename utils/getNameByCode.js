@@ -3,7 +3,7 @@ const Exam = require("../models/Exam");
 const Subject = require("../models/Subject");
 const Unit = require("../models/Unit");
 const Topic = require("../models/Topic");
-const escapeHtml = require("./htmlHelpers");
+const escapeHtml = require("./escapeHtml");
 
 /**
  * Get exam name from examcode

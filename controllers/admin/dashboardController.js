@@ -56,7 +56,6 @@ exports.index = async (req, res) => {
             Payment ? Payment.find().populate("user").sort({ createdAt: -1 }).limit(5) : []
             
         ]);
-        console.log(dashdata);
         res.render(`pages/${device}/admin/dashboard`, {dashdata});
 
         /*res.render(`pages/${device}/admin/dashboard`, {

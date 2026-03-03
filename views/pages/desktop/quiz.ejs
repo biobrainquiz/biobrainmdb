@@ -329,7 +329,7 @@
       async function submitQuiz() {
         try {
           // Send answers to server
-          const response = await fetch("/api/quiz/submit", {
+          const response = await fetch("/quiz/submit", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

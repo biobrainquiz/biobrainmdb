@@ -3,18 +3,24 @@ const { validateExistence, cascadeDelete } = require("../utils/dbHelpers");
 
 const questionSchema = new mongoose.Schema({
   qno: { type: Number, required: true },
-  examcode: { type: String, required: true, uppercase: true, ref: "Exam", trim: true },
-  subjectcode: { type: String, required: true, uppercase: true, ref: "Subject", trim: true },
-  unitcode: { type: String, required: true, uppercase: true, ref: "Unit", trim: true },
-  topiccode: { type: String, required: true, uppercase: true, ref: "Topic", trim: true },
+  examcode: { type: String, required: true, uppercase: true, trim: true },
+  subjectcode: { type: String, required: true, uppercase: true,  trim: true },
+  unitcode: { type: String, required: true, uppercase: true,  trim: true },
+  topiccode: { type: String, required: true, uppercase: true, trim: true },
   question: { type: String, required: true, trim: true },
   opt1: { type: String, required: true, trim: true },
   opt2: { type: String, required: true, trim: true },
   opt3: { type: String, required: true, trim: true },
   opt4: { type: String, required: true, trim: true },
-  answer: { type: Number, required: true, min: 1, max: 4, trim: true },
-  difficulty_level: { type: String, required: true, trim: true, enum: ["easy", "hard"] },
-  marks: { type: Number, required: true, min: 1, trim: true }
+  answer: { type: Number, required: true, min: 1, max: 4 },
+  difficulty_level: { type: String, required: true,  enum: ["easy", "hard"] },
+  marks: { type: Number, required: true, min: 1},
+
+  // This enables population
+  exam: { type: mongoose.Schema.Types.ObjectId, ref: "Exam", required: true },
+  subject: { type: mongoose.Schema.Types.ObjectId, ref: "Subject", required: true },
+  unit: { type: mongoose.Schema.Types.ObjectId, ref: "Unit", required: true },
+  topic: { type: mongoose.Schema.Types.ObjectId, ref: "Topic", required: true }
 }, { timestamps: true });
 
 // Compound index

@@ -2,9 +2,14 @@ const mongoose = require("mongoose");
 const { validateExistence, cascadeDelete } = require("../utils/dbHelpers");
 
 const subjectSchema = new mongoose.Schema({
-    examcode: { type: String, required: true, ref: "Exam", trim: true },
+    //u can delete examcode as subject is linked to exam and you can get examcode corresponding to this subject
+    examcode: { type: String, required: true,trim: true }, 
+    
     subjectcode: { type: String, required: true, uppercase: true, trim: true },
-    subjectname: { type: String, required: true, trim: true }
+    subjectname: { type: String, required: true, trim: true },
+    
+    // link to Exam and this enables population
+    exam: { type: mongoose.Schema.Types.ObjectId, ref: "Exam", required: true }
 }, { timestamps: true });
 
 // Compound unique index

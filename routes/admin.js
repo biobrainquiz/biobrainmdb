@@ -4,6 +4,8 @@ const router = express.Router();
 // Middleware
 const requireLogin = require("../middleware/requireLogin");
 router.use(requireLogin);
+
+
 // Controllers
 const examController = require("../controllers/admin/examController");
 const subjectController = require("../controllers/admin/subjectController");
@@ -13,26 +15,25 @@ const questionController = require("../controllers/admin/questionController");
 const dashboardController = require("../controllers/admin/dashboardController");
 // Protect all admin routes
 
-
 // =====================
 // DASHBOARD
 // =====================
-//router.get("/", dashboardController.index);
+router.get("/", dashboardController.index);
 
-router.get("/", (req, res, next) => {
-    console.log("Admin route hit");
+/*router.get("/", (req, res, next) => {
     next();
-}, dashboardController.index);
+}, dashboardController.index);*/
 
-/*router.get("/", (req, res) => {
-  res.render(`pages/${getDevice(req)}/admin/dashboard`);
-});*/
-
+// routes/admin.js or examController.js
 // =====================
 // EXAMS
 // =====================
+
+// GET all exams
 router.get("/exams", examController.list);
-router.get("/exams/new", examController.showCreate);
+router.get("/subjects", subjectController.list);
+
+/*router.get("/exams/new", examController.showCreate);
 router.post("/exams", examController.create);
 router.get("/exams/:id/edit", examController.showEdit);
 router.post("/exams/:id", examController.update);
@@ -41,7 +42,7 @@ router.post("/exams/:id/delete", examController.remove);
 // =====================
 // SUBJECTS
 // =====================
-router.get("/subjects", subjectController.list);
+
 router.get("/subjects/new", subjectController.showCreate);
 router.post("/subjects", subjectController.create);
 router.get("/subjects/:id/edit", subjectController.showEdit);
@@ -76,6 +77,7 @@ router.get("/questions/new", questionController.showCreate);
 router.post("/questions", questionController.create);
 router.get("/questions/:id/edit", questionController.showEdit);
 router.post("/questions/:id", questionController.update);
-router.post("/questions/:id/delete", questionController.remove);
+router.post("/questions/:id/delete", questionController.remove);*/
+
 
 module.exports = router;
