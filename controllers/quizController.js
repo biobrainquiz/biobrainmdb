@@ -2,13 +2,12 @@ const getNextSequence = require("../utils/getNextSequence");
 const QuizResult = require("../models/QuizResult");
 const getDevice = require("../utils/getDevice");
 const mapCodesToNames = require("../utils/mapCodesToNames");
-
 const Question = require("../models/Question");
-const { 
-  getExamName, 
-  getSubjectName, 
-  getUnitName, 
-  getTopicName 
+const {
+  getExamName,
+  getSubjectName,
+  getUnitName,
+  getTopicName
 } = require("../utils/getNameByCode");
 
 exports.startQuiz = async (req, res) => {

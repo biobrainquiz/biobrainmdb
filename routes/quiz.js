@@ -5,7 +5,6 @@ const router = express.Router();
 const requireLogin = require("../middleware/requireLogin");
 const quizController = require("../controllers/quizController");
 
-// Start Quiz
 router.get(
   "/quiz/start/:examcode/:subjectcode/:unitcode/:topiccode",
   requireLogin,
