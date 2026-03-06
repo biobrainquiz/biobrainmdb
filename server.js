@@ -233,6 +233,42 @@ app.use((req, res) => {
 const liveLogs = require("./utils/liveLogs");
 console.log(liveLogs);
 
+
+
+
+
+const http = require("http");
+const WebSocket = require("ws");
+
+const server = http.createServer(app);
+
+// Setup WebSocket server
+const wss = new WebSocket.Server({ server, path: "/logs" });
+
+server.listen(3000, () => {
+  console.log("Server running on http://localhost:3000");
+});
+
+// Broadcast helper
+wss.broadcast = (data) => {
+  wss.clients.forEach(client => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify(data));
+    }
+  });
+};
+
+const ws = new WebSocket("ws://localhost:3000/logs");
+app.get("/admin/logs/live", (req, res) => {
+  res.render("pages/admin/liveLogs"); // your EJS page
+});
+
+// Example: send a log every 5 seconds
+setInterval(() => {
+  const log = { time: new Date().toLocaleTimeString(), message: "Test log entry" };
+  wss.broadcast(log);
+}, 5000);
+
 /* =========================================
    START SERVER
 ========================================= */

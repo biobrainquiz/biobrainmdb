@@ -84,12 +84,11 @@ router.post("/questions/:id/delete", questionController.remove);*/
 // routes/adminLogs.js
 
 
-router.get("/admin/logs/live", (req, res) => {
-
-    res.render(`pages/${getDevice(req)}/admin/liveLogs`, {
+router.get("/admin/logs", (req, res) => {
+    res.render(`pages/${getDevice(req)}/admin/logs`, {
+        logTypes: ["info", "error"],  // for old logs dropdown
         username: req.session?.username || "ADMIN"
     });
-
 });
 
 module.exports = router;

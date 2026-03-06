@@ -26,6 +26,7 @@
     "nodemailer": "^8.0.1",
     "resend": "^6.9.2",
     "winston": "^3.19.0",
-    "winston-daily-rotate-file": "^5.0.0"
+    "winston-daily-rotate-file": "^5.0.0",
+    "ws": "^8.19.0"
   }
 }
