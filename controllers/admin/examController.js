@@ -28,8 +28,6 @@ exports.update = async (req, res) => {
     await Exam.findByIdAndUpdate(req.params.id, {
       examname: req.body.examname
     });
-    console.log(req.params.id );
-    console.log(req.body.examname);
     res.json({ success: true });
 
   } catch (err) {
@@ -38,7 +36,7 @@ exports.update = async (req, res) => {
   }
 };
 
-exports.remove = async (req, res) => {
+exports.delete = async (req, res) => {
   try {
     const exam = await Exam.findById(req.params.id);
 

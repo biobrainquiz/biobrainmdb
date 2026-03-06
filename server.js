@@ -1,35 +1,69 @@
+/* =========================================
+   ENVIRONMENT VARIABLES
+========================================= */
 require("dotenv").config();
+
+
+/* =========================================
+   CORE MODULES
+========================================= */
 const path = require("path");
 const express = require("express");
+const mongoose = require("mongoose");
+
+
+/* =========================================
+   SESSION & AUTH MODULES
+========================================= */
 const session = require("express-session");
 const MongoStore = require("connect-mongo").default;
-const mongoose = require("mongoose");
 const useragent = require("express-useragent");
+
+
+/* =========================================
+   UTILITIES
+========================================= */
 const escapeHtml = require("./utils/escapeHtml");
 const getDevice = require("./utils/getDevice");
-const logger = require("./utils/logger");
 const mapCodesToNames = require("./utils/mapCodesToNames");
-const { autoSeed } = require("./utils/autoSeeder");
-const requireLogin = require("./middleware/requireLogin");
+const autoSeed = require("./utils/autoSeeder");
+const logger = require("./utils/logger");
+
+
+/* =========================================
+   MIDDLEWARE
+========================================= */
 const errorHandler = require("./middleware/errorHandler");
+const requireLogin = require("./middleware/requireLogin");
+
+
+/* =========================================
+   CONFIGURATION
+========================================= */
 const connectDB = require("./config/db");
+
+
+/* =========================================
+   DATABASE MODELS
+========================================= */
 const QuizResult = require("./models/QuizResult");
 const Question = require("./models/Question");
 const Unit = require("./models/Unit");
 const Topic = require("./models/Topic");
 const Exam = require("./models/Exam");
 
-const app = express();
-app.use(errorHandler);
-app.use((req, res, next) => {
-  logger.info(`${req.method} ${req.url} ${req.ip}`);
-  next();
-});
 
-/* ==============================
-   Environment & MongoDB
-============================== */
+/* =========================================
+   EXPRESS APPLICATION INITIALIZATION
+========================================= */
+const app = express();
+
+
+/* =========================================
+   DATABASE CONNECTION
+========================================= */
 const isProduction = process.env.PRODUCTION === "true";
+
 const mongoURI = isProduction
   ? process.env.PRODUCTION_SERVER_MONGO_URI
   : process.env.LOCAL_SERVER_MONGO_URI;
@@ -48,17 +82,55 @@ mongoose.connect(mongoURI)
     process.exit(1);
   });
 
-/* ==============================
-   Session Middleware
-============================== */
-const sessionExpiryMin = parseInt(process.env.SESSION_EXPIRY_IN_MIN) || 15; // default 15 minutes
-app.use(session({
-  secret: process.env.SESSION_SECRET || "supersecretkey",
-  resave: false,
-  saveUninitialized: false,
-  store: MongoStore.create({ mongoUrl: mongoURI }),
-  cookie: { maxAge: sessionExpiryMin * 60 * 1000 }
-}));
+
+/* =========================================
+   GLOBAL MIDDLEWARE
+========================================= */
+
+// Request Logger
+app.use((req, res, next) => {
+  logger.info(`${req.method} ${req.url} ${req.ip}`);
+  next();
+});
+
+// Body Parsers
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Static Files
+app.use(express.static(path.join(__dirname, "public")));
+
+// Device Detection
+app.use(useragent.express());
+
+
+/* =========================================
+   VIEW ENGINE CONFIGURATION
+========================================= */
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
+
+/* =========================================
+   SESSION CONFIGURATION
+========================================= */
+const sessionExpiryMin =
+  parseInt(process.env.SESSION_EXPIRY_IN_MIN) || 15;
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "supersecretkey",
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl: mongoURI }),
+    cookie: { maxAge: sessionExpiryMin * 60 * 1000 }
+  })
+);
+
+
+/* =========================================
+   SESSION MIDDLEWARE
+========================================= */
 
 // Make session available in EJS
 app.use((req, res, next) => {
@@ -72,53 +144,48 @@ app.use((req, res, next) => {
   next();
 });
 
-// Disable cache
+// Disable caching
 app.use((req, res, next) => {
   res.set("Cache-Control", "no-store");
   next();
 });
 
-/* ==============================
-   View Engine & Middleware
-============================== */
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
 
-app.use(express.static(path.join(__dirname, "public")));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(useragent.express());
-
-
-/* ==============================
-   Page Routes
-============================== */
-
-// Public Pages
+/* =========================================
+   PUBLIC PAGE ROUTES
+========================================= */
 const publicPages = ["index", "about", "login", "register", "forgot"];
+
 publicPages.forEach(page => {
   app.get(`/${page === "index" ? "" : page}`, (req, res) => {
     res.render(`pages/${getDevice(req)}/${page}`);
   });
 });
 
-// Footer Pages
+
+/* =========================================
+   FOOTER PAGE ROUTES
+========================================= */
 const footerPages = ["disclaimer", "privacy", "terms"];
+
 footerPages.forEach(page => {
   app.get(`/${page}`, (req, res) => {
     res.render(`pages/${getDevice(req)}/${page}`);
   });
 });
 
+
+/* =========================================
+   PROTECTED PAGE ROUTES
+========================================= */
 app.get("/leaderboard", requireLogin, (req, res) => {
   res.render(`pages/${getDevice(req)}/leaderboard`);
 });
 
 
-/* ==============================
-   API / Other Routes
-============================== */
-// Route Modules
+/* =========================================
+   APPLICATION ROUTES
+========================================= */
 app.use("/admin", require("./routes/admin"));
 app.use("/", require("./routes/user"));
 app.use("/", require("./routes/unit"));
@@ -127,31 +194,47 @@ app.use("/", require("./routes/quiz"));
 app.use("/", require("./routes/authRoutes"));
 
 
+/* =========================================
+   SESSION KEEP-ALIVE ENDPOINT
+========================================= */
 app.get("/keep-session-alive", (req, res) => {
   if (req.session.user) {
-    // touch the session to reset expiry
     req.session.touch();
     return res.sendStatus(200);
   }
   res.sendStatus(401);
 });
 
+
+/* =========================================
+   ERROR HANDLING
+========================================= */
+
+// Global error handler
 app.use((err, req, res, next) => {
-  console.error("GLOBAL ERROR:", err);
+  //console.error("GLOBAL ERROR:", err);
+  logger.error({
+      message: "GLOBAL ERROR",
+      error: err.message,
+      stack: err.stack
+    });
   res.status(500).send("Something broke!");
 });
 
-/* ==============================
-   404 Handler
-============================== */
+
+/* =========================================
+   404 HANDLER
+========================================= */
 app.use((req, res) => {
   res.status(404).render("404");
 });
 
-/* ==============================
-   Start Server
-============================== */
+
+/* =========================================
+   START SERVER
+========================================= */
 const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
   logger.info(`🚀 Server running on port ${PORT}`);
 });

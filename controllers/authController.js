@@ -3,6 +3,7 @@ const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
 const { Resend } = require("resend");
 const getDevice = require("../utils/getDevice");
+const logger = require("../utils/logger");
 
 // ==========================
 // LOGIN
@@ -55,8 +56,13 @@ exports.login = async (req, res) => {
         });
 
     } catch (err) {
-        console.error("Login Error:", err);
+        //console.error("Login Error:", err);
 
+        logger.error({
+            message: "Login Error",
+            error: err.message,
+            stack: err.stack
+        });
         return res.status(500).json({
             success: false,
             message: process.env.NODE_ENV === "production"
@@ -109,7 +115,14 @@ exports.register = async (req, res) => {
         });
 
     } catch (err) {
-        console.error("Register Error:", err);
+        //console.error("Register Error:", err);
+
+
+        logger.error({
+            message: "Register Error",
+            error: err.message,
+            stack: err.stack
+        });
 
         return res.status(500).json({
             success: false,
@@ -201,7 +214,13 @@ exports.forgotPassword = async (req, res) => {
         });
 
     } catch (err) {
-        console.error("Forgot Password Error:", err);
+        //console.error("Forgot Password Error:", err);
+
+        logger.error({
+            message: "Forgot Password Error:",
+            error: err.message,
+            stack: err.stack
+        });
 
         return res.status(500).json({
             success: false,
@@ -281,7 +300,12 @@ exports.resetPassword = async (req, res) => {
         });
 
     } catch (err) {
-        console.error("Reset Password Error:", err);
+        //console.error("Reset Password Error:", err);
+        logger.error({
+            message: "Reset Password Error:",
+            error: err.message,
+            stack: err.stack
+        });
 
         return res.status(500).json({
             success: false,

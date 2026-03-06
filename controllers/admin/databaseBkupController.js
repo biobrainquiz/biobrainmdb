@@ -1,6 +1,6 @@
 
-const { autoSeed } = require("../../utils/autoSeeder");
-const { exportDB } = require("../../utils/exportDB");
+const autoSeed = require("../../utils/autoSeeder");
+const exportDB = require("../../utils/exportDB");
 
 /* ===============================
    BACKUP DATABASE

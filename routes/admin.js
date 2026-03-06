@@ -16,6 +16,7 @@ const questionController = require("../controllers/admin/questionController");
 const dashboardController = require("../controllers/admin/dashboardController");
 const databaseBkupController = require("../controllers/admin/databaseBkupController");
 
+
 // =====================
 // DASHBOARD
 // =====================
@@ -28,7 +29,7 @@ router.post("/backup", databaseBkupController.backupDatabase);
 // GET all exams
 router.get("/exams", examController.list);
 router.post("/exams/update/:id", examController.update);
-router.post("/exams/delete/:id", examController.remove);
+router.post("/exams/delete/:id", examController.delete);
 router.post("/exams/create", examController.create);
 
 // =====================
@@ -40,14 +41,18 @@ router.post("/subjects/update/:id", subjectController.update);
 router.post("/subjects/delete/:id", subjectController.delete);
 
 
-    /*
-router.get("/units", unitController.list);
-router.get("/units/new", unitController.showCreate);
-router.post("/units", unitController.create);
-router.get("/units/:id/edit", unitController.showEdit);
-router.post("/units/:id", unitController.update);
-router.post("/units/:id/delete", unitController.remove);
 
+/* =============================
+   UNITS 
+============================= */
+
+router.get("/units", unitController.list);
+router.post("/units/create", unitController.create);
+router.post("/units/update/:id", unitController.update);
+router.delete("/units/:id", unitController.delete);
+router.get("/api/subjects/:examcode", unitController.getSubjectsByExam);
+
+/*
 // =====================
 // TOPICS
 // =====================
@@ -67,6 +72,5 @@ router.post("/questions", questionController.create);
 router.get("/questions/:id/edit", questionController.showEdit);
 router.post("/questions/:id", questionController.update);
 router.post("/questions/:id/delete", questionController.remove);*/
-
 
 module.exports = router;

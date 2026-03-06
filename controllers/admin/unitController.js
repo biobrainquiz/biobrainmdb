@@ -1,36 +1,167 @@
 const Unit = require("../../models/Unit");
 const Exam = require("../../models/Exam");
 const Subject = require("../../models/Subject");
+const getDevice = require("../../utils/getDevice"); // if you use device-based views
+
+/* ======================================================
+   LIST UNITS PAGE
+====================================================== */
 
 exports.list = async (req, res) => {
-  const units = await Unit.find().populate("exam subject");
-  res.render(`pages/${getDevice(req)}/admin/units`, { units });
+
+    try {
+
+        const units = await Unit.find()
+            .populate("exam")
+            .populate("subject")
+            .sort({ createdAt: -1 });
+
+        const exams = await Exam.find().sort({ examname: 1 });
+
+        const subjects = await Subject.find().populate("exam").sort({ subjectname: 1 });
+
+        res.render(`pages/${getDevice(req)}/admin/units/unit`, {
+             units,
+            exams,
+            subjects
+            });
+        
+    } catch (err) {
+
+        console.error(err);
+        res.status(500).send("Error loading units");
+
+    }
+
 };
 
-exports.showCreate = async (req, res) => {
-  const exams = await Exam.find();
-  const subjects = await Subject.find();
-  res.render(`pages/${getDevice(req)}/admin/addUnit`, { exams, subjects });
-};
+
+/* ======================================================
+   CREATE UNIT
+====================================================== */
 
 exports.create = async (req, res) => {
-  await Unit.create(req.body);
-  res.redirect("/admin/units");
+    try {
+
+        const { examCode,subjectCode,unitcode,unitname,examId,subjectId } = req.body;
+        const exam = await Exam.findById(examId);
+        const subject = await Subject.findById(subjectId);
+
+        if (!exam || !subject) {
+            return res.status(400).json({ error: "Invalid exam or subject" });
+        }
+
+        const newUnit = await Unit.create({
+
+            exam: exam._id,
+            subject: subject._id,
+
+            examcode: exam.examcode,
+            subjectcode: subject.subjectcode,
+
+            unitname,
+            unitcode
+
+        });
+
+       return res.json({
+            success: true,
+            message: "Unit created successfully!"
+        });
+
+    } catch (err) {
+
+        console.error(err);
+        res.status(500).json({ error: "Error creating unit" });
+    }
 };
 
-exports.showEdit = async (req, res) => {
-  const unit = await Unit.findById(req.params.id);
-  const exams = await Exam.find();
-  const subjects = await Subject.find();
-  res.render(`pages/${getDevice(req)}/admin/editUnit`, { unit, exams, subjects });
-};
+
+/* ======================================================
+   UPDATE UNIT
+====================================================== */
+
+
 
 exports.update = async (req, res) => {
-  await Unit.findByIdAndUpdate(req.params.id, req.body);
-  res.redirect("/admin/units");
+  try {
+    await Unit.findByIdAndUpdate(req.params.id, {
+      unitname: req.body.unitname
+    });
+    res.json({ success: true });
+
+  } catch (err) {
+    console.error(err);
+    res.json({ success: false });
+  }
 };
 
-exports.remove = async (req, res) => {
-  await Unit.findByIdAndDelete(req.params.id);
-  res.redirect("/admin/units");
+
+/* ======================================================
+   DELETE UNIT
+====================================================== */
+
+/*exports.delete = async (req, res) => {
+
+    try {
+
+        await Unit.findOneAndDelete({ _id: req.params.id });
+
+        res.json({ success: true });
+
+    } catch (err) {
+
+        console.error(err);
+        res.status(500).json({ error: "Delete failed" });
+
+    }
+
+};*/
+
+exports.delete = async (req, res) => {
+
+  try {
+
+    const unit = await Unit.findById({ _id: req.params.id });
+
+    await Unit.findOneAndDelete({
+         examcode: unit.examcode,
+        subjectcode: unit.subjectcode,
+        unitcode: unit.unitcode
+    });
+
+    res.json({ success: true });
+
+  } catch (err) {
+
+    console.error("Delete error:", err);
+
+    res.json({
+      success: false,
+      message: err.message
+    });
+  }
+};
+
+/* ======================================================
+   API: GET SUBJECTS BY EXAM
+====================================================== */
+
+exports.getSubjectsByExam = async (req, res) => {
+
+    try {
+
+        const subjects = await Subject.find({
+            examcode: req.params.examcode
+        }).sort({ subjectname: 1 });
+
+        res.json(subjects);
+
+    } catch (err) {
+
+        console.error(err);
+        res.status(500).json({ error: "Cannot load subjects" });
+
+    }
+
 };

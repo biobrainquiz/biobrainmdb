@@ -6,6 +6,7 @@ const Subject = require("../models/Subject");
 const Unit = require("../models/Unit");
 const Topic = require("../models/Topic");
 const Question = require("../models/Question");
+const logger = require("./logger");
 
 async function exportDB() {
 
@@ -28,8 +29,7 @@ async function exportDB() {
     fs.writeFileSync(path.join(backupDir, "topictable.json"), JSON.stringify(topics, null, 2));
     fs.writeFileSync(path.join(backupDir, "questiontable.json"), JSON.stringify(questions, null, 2));
 
-    console.log("✅ Database exported to JSON files");
-
+    logger.info("✅ Database exported to JSON files");
 }
 
-module.exports = { exportDB };
+module.exports = exportDB;

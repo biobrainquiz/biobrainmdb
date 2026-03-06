@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Admin Dashboard - Units</title>
+
+<link rel="stylesheet" href="/css/adminStyle.css">
+
+<style>
+
+.unit-wrapper{
+background:#f4f6f9;
+padding:25px;
+border-radius:8px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+background:#fff;
+}
+
+th,td{
+padding:10px;
+border:1px solid #e0e0e0;
+font-size:14px;
+}
+
+th{
+background:#2c3e50;
+color:white;
+}
+
+tr:nth-child(even){
+background:#f9fafc;
+}
+
+.center{
+text-align:center;
+}
+
+.sort-btn{
+background:#34495e;
+color:white;
+font-size:10px;
+padding:2px 6px;
+border:none;
+cursor:pointer;
+margin-left:5px;
+}
+
+select{
+margin-top:5px;
+width:100%;
+}
+
+input{
+width:95%;
+padding:4px;
+}
+
+.action-btn{
+padding:4px 8px;
+margin:2px;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<%- include('../../../../partials/admin/header') %>
+
+<div class="admin-container">
+
+<%- include('../../../../partials/admin/sidebar') %>
+
+<main class="admin-content">
+
+<div class="unit-wrapper">
+
+<h2>Unit Management</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>#</th>
+
+<th>
+Exam Code
+<button class="sort-btn" onclick="sortTable(1)">⇅</button>
+<select id="filterExamCode" onchange="applyFilters()"><option value="">All</option></select>
+</th>
+
+<th>
+Exam Name
+<button class="sort-btn" onclick="sortTable(2)">⇅</button>
+<select id="filterExamName" onchange="applyFilters()"><option value="">All</option></select>
+</th>
+
+<th>
+Subject Code
+<button class="sort-btn" onclick="sortTable(3)">⇅</button>
+<select id="filterSubjectCode" onchange="applyFilters()"><option value="">All</option></select>
+</th>
+
+<th>
+Subject Name
+<button class="sort-btn" onclick="sortTable(4)">⇅</button>
+<select id="filterSubjectName" onchange="applyFilters()"><option value="">All</option></select>
+</th>
+
+<th>
+Unit Code
+<button class="sort-btn" onclick="sortTable(5)">⇅</button>
+<select id="filterUnitCode" onchange="applyFilters()"><option value="">All</option></select>
+</th>
+
+<th>
+Unit Name
+<button class="sort-btn" onclick="sortTable(6)">⇅</button>
+<select id="filterUnitName" onchange="applyFilters()"><option value="">All</option></select>
+</th>
+
+<th>
+Created
+<button class="sort-btn" onclick="sortTable(7)">⇅</button>
+<select id="filterCreated" onchange="applyFilters()"><option value="">All</option></select>
+</th>
+
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="unitTableBody">
+
+<% units.forEach((unit,index)=>{ %>
+
+<tr data-id="<%= unit._id %>">
+
+<td class="center row-number"><%= index+1 %></td>
+
+<td><%= unit.exam?.examcode %></td>
+
+<td><%= unit.exam?.examname %></td>
+
+<td><%= unit.subject?.subjectcode %></td>
+
+<td><%= unit.subject?.subjectname %></td>
+
+<td><%= unit.unitcode %></td>
+
+<td class="unitname"><%= unit.unitname %></td>
+
+<td><%= new Date(unit.createdAt).toLocaleDateString() %></td>
+
+<td class="center">
+
+<button class="action-btn" onclick="editUnit(this)">Edit</button>
+<button class="action-btn" onclick="deleteUnit('<%= unit._id %>')">Delete</button>
+
+</td>
+
+</tr>
+
+<% }) %>
+
+
+<tr id="insertRow">
+
+<td>#</td>
+
+<td id="newExamCode"></td>
+
+<td>
+
+<select id="examSelect" onchange="examChanged()">
+
+<option value="">Select Exam</option>
+
+<% exams.forEach(exam=>{ %>
+
+<option value="<%= exam._id %>" data-code="<%= exam.examcode %>">
+<%= exam.examname %>
+</option>
+
+<% }) %>
+
+</select>
+
+</td>
+
+<td id="newSubjectCode"></td>
+
+<td>
+
+<select id="subjectSelect" onchange="subjectChanged()">
+
+<option value="">Select Subject</option>
+
+</select>
+
+</td>
+
+<td>
+
+<input id="unitCodeInput">
+
+</td>
+
+<td>
+
+<input id="unitNameInput">
+
+</td>
+
+<td>-</td>
+
+<td>
+
+<button class="action-btn" onclick="insertUnit()">Insert</button>
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</main>
+
+</div>
+
+<%- include('../../../../partials/admin/footer') %>
+
+
+<script>
+
+const subjects = <%- JSON.stringify(subjects) %>;
+
+let sortDirection={};
+
+function refreshRowNumbers(){
+
+const rows=document.querySelectorAll("#unitTableBody tr");
+
+let i=1;
+
+rows.forEach(row=>{
+if(row.style.display!=="none" && !row.id){
+row.querySelector(".row-number").innerText=i++;
+}
+});
+
+}
+
+function buildFilters(){
+
+const rows=document.querySelectorAll("#unitTableBody tr");
+
+const sets=[new Set(),new Set(),new Set(),new Set(),new Set(),new Set(),new Set()];
+
+rows.forEach(row=>{
+
+if(row.id==="insertRow") return;
+
+for(let i=1;i<=7;i++)
+sets[i-1].add(row.children[i].innerText.trim());
+
+});
+
+fillDropdown("filterExamCode",sets[0]);
+fillDropdown("filterExamName",sets[1]);
+fillDropdown("filterSubjectCode",sets[2]);
+fillDropdown("filterSubjectName",sets[3]);
+fillDropdown("filterUnitCode",sets[4]);
+fillDropdown("filterUnitName",sets[5]);
+fillDropdown("filterCreated",sets[6]);
+
+}
+
+function fillDropdown(id,set){
+
+const select=document.getElementById(id);
+
+const current=select.value;
+
+select.innerHTML='<option value="">All</option>';
+
+Array.from(set).sort().forEach(v=>{
+
+const opt=document.createElement("option");
+opt.value=v;
+opt.textContent=v;
+
+select.appendChild(opt);
+
+});
+
+select.value=current;
+
+}
+
+function applyFilters(){
+
+const filters=[
+filterExamCode.value,
+filterExamName.value,
+filterSubjectCode.value,
+filterSubjectName.value,
+filterUnitCode.value,
+filterUnitName.value,
+filterCreated.value
+];
+
+const rows=document.querySelectorAll("#unitTableBody tr");
+
+rows.forEach(row=>{
+
+if(row.id==="insertRow") return;
+
+let visible=true;
+
+filters.forEach((f,i)=>{
+if(f && row.children[i+1].innerText!==f)
+visible=false;
+});
+
+row.style.display=visible?"":"none";
+
+});
+
+refreshRowNumbers();
+
+}
+
+function sortTable(col){
+
+const table=document.getElementById("unitTableBody");
+
+const rows=Array.from(table.querySelectorAll("tr")).filter(r=>r.id!=="insertRow");
+
+sortDirection[col]=!sortDirection[col];
+
+rows.sort((a,b)=>{
+
+let A=a.children[col].innerText.toLowerCase();
+let B=b.children[col].innerText.toLowerCase();
+
+if(A<B) return sortDirection[col]?-1:1;
+if(A>B) return sortDirection[col]?1:-1;
+
+return 0;
+
+});
+
+rows.forEach(r=>table.appendChild(r));
+
+table.appendChild(document.getElementById("insertRow"));
+
+refreshRowNumbers();
+buildFilters();
+
+}
+
+
+function examChanged(){
+
+const exam=document.getElementById("examSelect");
+
+const code=exam.selectedOptions[0]?.dataset.code;
+
+document.getElementById("newExamCode").innerText=code||"";
+
+const subjectSelect=document.getElementById("subjectSelect");
+
+subjectSelect.innerHTML='<option value="">Select Subject</option>';
+
+subjects.forEach(s=>{
+
+if(s.exam._id===exam.value){
+
+const opt=document.createElement("option");
+
+opt.value=s._id;
+opt.dataset.code=s.subjectcode;
+opt.textContent=s.subjectname;
+
+subjectSelect.appendChild(opt);
+
+}
+
+});
+
+}
+
+
+function subjectChanged(){
+
+const sub=document.getElementById("subjectSelect");
+
+const code=sub.selectedOptions[0]?.dataset.code;
+
+document.getElementById("newSubjectCode").innerText=code||"";
+
+}
+
+
+async function insertUnit(){
+
+const exam=document.getElementById("examSelect").value;
+const subject=document.getElementById("subjectSelect").value;
+const unitcode=document.getElementById("unitCodeInput").value;
+const unitname=document.getElementById("unitNameInput").value;
+
+await fetch("/admin/units",{
+
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({exam,subject,unitcode,unitname})
+
+});
+
+location.reload();
+
+}
+
+
+function editUnit(btn){
+
+const row=btn.closest("tr");
+
+const cell=row.querySelector(".unitname");
+
+const old=cell.innerText;
+
+cell.innerHTML=`<input id="editName" value="${old}">`;
+
+btn.innerText="Save";
+
+btn.onclick=function(){saveUnit(this)};
+
+}
+
+
+async function saveUnit(btn){
+
+const row=btn.closest("tr");
+
+const id=row.dataset.id;
+
+const name=row.querySelector("#editName").value;
+
+await fetch("/admin/units/"+id,{
+
+method:"PUT",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({unitname:name})
+
+});
+
+location.reload();
+
+}
+
+
+async function deleteUnit(id){
+
+if(!confirm("Delete this unit?")) return;
+
+await fetch("/admin/units/"+id,{method:"DELETE"});
+
+location.reload();
+
+}
+
+
+document.addEventListener("DOMContentLoaded",buildFilters);
+
+</script>
+
+</body>
+</html>

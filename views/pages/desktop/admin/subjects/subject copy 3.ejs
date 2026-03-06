@@ -10,89 +10,51 @@
 
 .subject-wrapper{
 background:#f4f6f9;
-padding:30px;
-border-radius:10px;
+padding:25px;
+border-radius:8px;
 }
 
-.page-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
+.subject-wrapper h2{
 margin-bottom:20px;
 }
-
-.page-header h2{
-margin:0;
-font-size:22px;
-font-weight:600;
-color:#2c3e50;
-}
-
-/* CARD */
-.table-card{
-background:#fff;
-border-radius:10px;
-box-shadow:0 4px 14px rgba(0,0,0,0.08);
-overflow:hidden;
-}
-
-/* TABLE */
 
 table{
 width:100%;
 border-collapse:collapse;
+background:#fff;
 }
 
 th,td{
-padding:12px 10px;
+padding:10px;
+border:1px solid #e0e0e0;
 font-size:14px;
 text-align:left;
-border-bottom:1px solid #e9ecef;
 }
 
 th{
 background:#2c3e50;
 color:white;
-font-weight:500;
-font-size:13px;
-}
-
-tbody tr:hover{
-background:#f7fbff;
 }
 
 tr:nth-child(even){
-background:#fafbfd;
+background:#f9fafc;
 }
 
 .center{
 text-align:center;
 }
 
-/* INPUTS */
-
 input[type="text"],select{
-padding:6px 8px;
+padding:6px;
 width:95%;
-border:1px solid #d6d6d6;
-border-radius:4px;
-font-size:13px;
 }
-
-/* BUTTONS */
 
 button{
-padding:6px 10px;
+padding:5px 8px;
 border:none;
-border-radius:5px;
+border-radius:4px;
 font-size:12px;
 cursor:pointer;
-transition:0.2s;
-}
-
-button:hover{
-transform:translateY(-1px);
-opacity:0.9;
 }
 
 .edit-btn{background:#3498db;color:white;}
@@ -101,32 +63,15 @@ opacity:0.9;
 .delete-btn{background:#e74c3c;color:white;}
 .add-btn{background:#27ae60;color:white;}
 
-.sort-btn{
-background:#34495e;
-color:white;
-font-size:10px;
-padding:2px 6px;
-margin-left:5px;
-border-radius:3px;
-}
-
-/* ADD ROW */
-
 .add-row{
 background:#eef7ff;
 }
 
-.add-row td{
-border-top:2px dashed #d6eaff;
-}
-
-/* FILTER DROPDOWN */
-
-th select{
-margin-top:5px;
-width:100%;
-font-size:12px;
-padding:3px;
+.sort-btn{
+background:#34495e;
+color:white;
+font-size:10px;
+padding:2px 5px;
 }
 
 </style>
@@ -145,11 +90,7 @@ padding:3px;
 
 <div class="subject-wrapper">
 
-<div class="page-header">
-<h2>📚 Subject Management</h2>
-</div>
-
-<div class="table-card">
+<h2>Subject Management</h2>
 
 <table>
 
@@ -199,7 +140,7 @@ Created
 </select>
 </th>
 
-<th class="center">Actions</th>
+<th>Actions</th>
 
 </tr>
 
@@ -230,11 +171,15 @@ style="display:none;">
 
 </td>
 
-<td><%= subject.subjectcode %></td>
+<td>
+<%= subject.subjectcode %>
+</td>
 
-<td><%= new Date(subject.createdAt).toLocaleDateString() %></td>
+<td>
+<%= new Date(subject.createdAt).toLocaleDateString() %>
+</td>
 
-<td class="center">
+<td>
 
 <button class="edit-btn"
 onclick="enableEdit('<%= subject._id %>')">
@@ -320,7 +265,7 @@ placeholder="Subject Code">
 
 <td>--</td>
 
-<td class="center">
+<td>
 
 <button class="add-btn" onclick="addSubject()">
 Add
@@ -336,8 +281,6 @@ Add
 
 </div>
 
-</div>
-
 </main>
 
 </div>
@@ -345,8 +288,6 @@ Add
 <%- include('../../../../partials/admin/footer') %>
 
 <script>
-
-/* YOUR ORIGINAL JS (UNCHANGED) */
 
 let sortDirection={};
 

@@ -7,7 +7,7 @@ const Topic = require("../../models/Topic");
 const Question = require("../../models/Question");
 const QuizResult = require("../../models/QuizResult");
 const Payment = require("../../models/Payment"); // if exists
-const { autoSeed } = require("../../utils/autoSeeder");
+const autoSeed = require("../../utils/autoSeeder");
 
 exports.index = async (req, res) => {
     try {

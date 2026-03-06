@@ -1,0 +1,336 @@
+to this add inline edit,insert facility and delete facility..
+edit should allow only to edit unitname
+inline insert allows user to select examname via drop down and populate examcode automatically and similarly allow user to select subjectname and popluate subjectcode automatically and allow user to enter unitname,unitcode
+
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Admin Dashboard - Units</title>
+
+<link rel="stylesheet" href="/css/adminStyle.css">
+
+<style>
+
+.unit-wrapper{
+background:#f4f6f9;
+padding:25px;
+border-radius:8px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+background:#fff;
+}
+
+th,td{
+padding:10px;
+border:1px solid #e0e0e0;
+font-size:14px;
+}
+
+th{
+background:#2c3e50;
+color:white;
+}
+
+tr:nth-child(even){
+background:#f9fafc;
+}
+
+.center{
+text-align:center;
+}
+
+.sort-btn{
+background:#34495e;
+color:white;
+font-size:10px;
+padding:2px 6px;
+border:none;
+cursor:pointer;
+margin-left:5px;
+}
+
+select{
+margin-top:5px;
+width:100%;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<%- include('../../../../partials/admin/header') %>
+
+<div class="admin-container">
+
+<%- include('../../../../partials/admin/sidebar') %>
+
+<main class="admin-content">
+
+<div class="unit-wrapper">
+
+<h2>Unit Management</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>#</th>
+
+<th>
+Exam Code
+<button class="sort-btn" onclick="sortTable(1)">⇅</button>
+<select id="filterExamCode" onchange="applyFilters()">
+<option value="">All</option>
+</select>
+</th>
+
+<th>
+Exam Name
+<button class="sort-btn" onclick="sortTable(2)">⇅</button>
+<select id="filterExamName" onchange="applyFilters()">
+<option value="">All</option>
+</select>
+</th>
+
+<th>
+Subject Code
+<button class="sort-btn" onclick="sortTable(3)">⇅</button>
+<select id="filterSubjectCode" onchange="applyFilters()">
+<option value="">All</option>
+</select>
+</th>
+
+<th>
+Subject Name
+<button class="sort-btn" onclick="sortTable(4)">⇅</button>
+<select id="filterSubjectName" onchange="applyFilters()">
+<option value="">All</option>
+</select>
+</th>
+
+<th>
+Unit Code
+<button class="sort-btn" onclick="sortTable(5)">⇅</button>
+<select id="filterUnitCode" onchange="applyFilters()">
+<option value="">All</option>
+</select>
+</th>
+
+<th>
+Unit Name
+<button class="sort-btn" onclick="sortTable(6)">⇅</button>
+<select id="filterUnitName" onchange="applyFilters()">
+<option value="">All</option>
+</select>
+</th>
+
+<th>
+Created
+<button class="sort-btn" onclick="sortTable(7)">⇅</button>
+<select id="filterCreated" onchange="applyFilters()">
+<option value="">All</option>
+</select>
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="unitTableBody">
+
+<% units.forEach((unit,index)=>{ %>
+
+<tr>
+
+<td class="center row-number"><%= index+1 %></td>
+
+<td><%= unit.exam?.examcode %></td>
+
+<td><%= unit.exam?.examname %></td>
+
+<td><%= unit.subject?.subjectcode %></td>
+
+<td><%= unit.subject?.subjectname %></td>
+
+<td><%= unit.unitcode %></td>
+
+<td><%= unit.unitname %></td>
+
+<td><%= new Date(unit.createdAt).toLocaleDateString() %></td>
+
+</tr>
+
+<% }) %>
+
+</tbody>
+
+</table>
+
+</div>
+
+</main>
+
+</div>
+
+<%- include('../../../../partials/admin/footer') %>
+
+
+<script>
+
+let sortDirection={};
+
+function refreshRowNumbers(){
+
+const rows=document.querySelectorAll("#unitTableBody tr");
+
+rows.forEach((row,index)=>{
+if(row.style.display!=="none")
+row.querySelector(".row-number").innerText=index+1;
+});
+
+}
+
+
+
+function buildFilters(){
+
+const rows=document.querySelectorAll("#unitTableBody tr");
+
+const examcodes=new Set();
+const examnames=new Set();
+const subjectcodes=new Set();
+const subjectnames=new Set();
+const unitcodes=new Set();
+const unitnames=new Set();
+const dates=new Set();
+
+rows.forEach(row=>{
+
+examcodes.add(row.children[1].innerText.trim());
+examnames.add(row.children[2].innerText.trim());
+subjectcodes.add(row.children[3].innerText.trim());
+subjectnames.add(row.children[4].innerText.trim());
+unitcodes.add(row.children[5].innerText.trim());
+unitnames.add(row.children[6].innerText.trim());
+dates.add(row.children[7].innerText.trim());
+
+});
+
+fillDropdown("filterExamCode",examcodes);
+fillDropdown("filterExamName",examnames);
+fillDropdown("filterSubjectCode",subjectcodes);
+fillDropdown("filterSubjectName",subjectnames);
+fillDropdown("filterUnitCode",unitcodes);
+fillDropdown("filterUnitName",unitnames);
+fillDropdown("filterCreated",dates);
+
+}
+
+
+
+function fillDropdown(id,set){
+
+const select=document.getElementById(id);
+
+const current=select.value;
+
+select.innerHTML='<option value="">All</option>';
+
+Array.from(set).sort().forEach(v=>{
+
+const option=document.createElement("option");
+option.value=v;
+option.textContent=v;
+select.appendChild(option);
+
+});
+
+select.value=current;
+
+}
+
+
+
+function applyFilters(){
+
+const examcode=document.getElementById("filterExamCode").value;
+const examname=document.getElementById("filterExamName").value;
+const subjectcode=document.getElementById("filterSubjectCode").value;
+const subjectname=document.getElementById("filterSubjectName").value;
+const unitcode=document.getElementById("filterUnitCode").value;
+const unitname=document.getElementById("filterUnitName").value;
+const created=document.getElementById("filterCreated").value;
+
+const rows=document.querySelectorAll("#unitTableBody tr");
+
+rows.forEach(row=>{
+
+let visible=true;
+
+if(examcode && row.children[1].innerText!==examcode) visible=false;
+if(examname && row.children[2].innerText!==examname) visible=false;
+if(subjectcode && row.children[3].innerText!==subjectcode) visible=false;
+if(subjectname && row.children[4].innerText!==subjectname) visible=false;
+if(unitcode && row.children[5].innerText!==unitcode) visible=false;
+if(unitname && row.children[6].innerText!==unitname) visible=false;
+if(created && row.children[7].innerText!==created) visible=false;
+
+row.style.display=visible?"":"none";
+
+});
+
+refreshRowNumbers();
+
+}
+
+
+
+function sortTable(col){
+
+const table=document.getElementById("unitTableBody");
+
+const rows=Array.from(table.querySelectorAll("tr"));
+
+sortDirection[col]=!sortDirection[col];
+
+rows.sort((a,b)=>{
+
+let A=a.children[col].innerText.toLowerCase();
+let B=b.children[col].innerText.toLowerCase();
+
+if(!isNaN(Date.parse(A))){
+A=new Date(A);
+B=new Date(B);
+}
+
+if(A<B) return sortDirection[col]?-1:1;
+if(A>B) return sortDirection[col]?1:-1;
+
+return 0;
+
+});
+
+rows.forEach(r=>table.appendChild(r));
+
+refreshRowNumbers();
+buildFilters();
+
+}
+
+
+
+document.addEventListener("DOMContentLoaded",buildFilters);
+
+</script>
+
+</body>
+</html>

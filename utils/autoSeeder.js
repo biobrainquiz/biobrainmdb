@@ -6,12 +6,18 @@ const Unit = require("../models/Unit");
 const Topic = require("../models/Topic");
 const Question = require("../models/Question");
 const Payment = require("../models/Payment");
+const logger = require("./logger");
 
 function isForcedSeeding() {
   try {
     return process.env.FORCED_SEEDING === "true";
   } catch (err) {
-    console.error("❌ isForcedSeeding Failed:", err);
+    //logger.error(err);
+    logger.error({
+      message: "envirnonment variable process.env.FORCED_SEEDING Missing",
+      error: err.message,
+      stack: err.stack
+    });
     return false;
   }
 }
@@ -21,28 +27,29 @@ async function autoSeed(source) {
     const forced = isForcedSeeding();
 
     if (!forced) {
-      console.log("✅ Forced seeding disabled. Skipping...");
+      logger.info("✅ Forced seeding disabled. Skipping...");
       return;
     }
 
     if (forced) {
 
-      console.log("🔥  Forced seeding enabled.");
-      console.log("⚠ Clearing old Questions...");
+      logger.info("🔥  Forced seeding enabled.");
+      logger.info("⚠ Clearing old Questions...");
+
       await Question.deleteMany({});
-      console.log("⚠ Clearing old Topics...");
+      logger.info("⚠ Clearing old Topics...");
       await Topic.deleteMany();
-      console.log("⚠ Clearing old Units...");
+      logger.info("⚠ Clearing old Units...");
       await Unit.deleteMany();
-      console.log("⚠ Clearing old Subjects...");
+      logger.info("⚠ Clearing old Subjects...");
       await Subject.deleteMany();
-      console.log("⚠ Clearing old Exams...");
+      logger.info("⚠ Clearing old Exams...");
       await Exam.deleteMany();
-      console.log("⚠ Clearing old Payemnts...");
+      logger.info("⚠ Clearing old Payments...");
       await Payment.deleteMany({});
     }
 
-    console.log("⚡ Seeding database...");
+    logger.info("⚡ Seeding database...");
 
     //start
     // 2️⃣ Load JSON
@@ -55,7 +62,7 @@ async function autoSeed(source) {
 
     // 3️⃣ Insert Exams first
     const exams = await Exam.insertMany(examsData); // exams[i]._id available
-    console.log(`🔥 Exam seeded: ${exams.length} successfully!`);
+    logger.info(`🔥 Exam seeded: ${exams.length} successfully!`);
 
     // 4️⃣ Insert Subjects with exam _id
     const subjectsToInsert = subjectsData.map((sub, i) => {
@@ -63,7 +70,7 @@ async function autoSeed(source) {
       return { ...sub, exam: exam._id };
     });
     const subjects = await Subject.insertMany(subjectsToInsert);
-    console.log(`🔥 Subject seeded: ${subjects.length} successfully!`);
+    logger.info(`🔥 Subject seeded: ${subjects.length} successfully!`);
 
     // 5️⃣ Insert Units with exam & subject _id
     const unitsToInsert = unitsData.map(u => {
@@ -72,7 +79,7 @@ async function autoSeed(source) {
       return { ...u, exam: exam._id, subject: subject._id };
     });
     const units = await Unit.insertMany(unitsToInsert);
-    console.log(`🔥 Unit seeded: ${units.length} successfully!`);
+    logger.info(`🔥 Unit seeded: ${units.length} successfully!`);
 
     // 6️⃣ Insert Topics with exam, subject, unit _id
     const topicsToInsert = topicsData.map(t => {
@@ -82,7 +89,7 @@ async function autoSeed(source) {
       return { ...t, exam: exam._id, subject: subject._id, unit: unit._id };
     });
     const topics = await Topic.insertMany(topicsToInsert);
-    console.log(`🔥 Topics seeded: ${topics.length} successfully!`);
+    logger.info(`🔥 Topics seeded: ${topics.length} successfully!`);
 
     // 7️⃣ Insert Questions with exam, subject, unit, topic _id
     const questionsToInsert = questionsData.map(q => {
@@ -93,13 +100,18 @@ async function autoSeed(source) {
       return { ...q, exam: exam._id, subject: subject._id, unit: unit._id, topic: topic._id };
     });
     await Question.insertMany(questionsToInsert);
-    console.log(`🔥 Questions seeded: ${questionsToInsert.length} successfully!`);
-
-    console.log("✅ All data seeded successfully!");
+    logger.info(`🔥 Questions seeded: ${questionsToInsert.length} successfully!`);
+    logger.info("✅ All data seeded successfully!");
 
   }
   catch (err) {
-    console.error("❌ Auto seeding failed:", err);
+    //logger.info("❌ Auto seeding failed");
+    //logger.error(err);
+    logger.error({
+      message: "❌ Auto seeding failed",
+      error: err.message,
+      stack: err.stack
+    });
   }
 }
-module.exports = { autoSeed };
+module.exports = autoSeed;

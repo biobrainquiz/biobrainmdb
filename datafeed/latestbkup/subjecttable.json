@@ -1,42 +1,42 @@
 [
   {
-    "_id": "69a9d68ee17984242e0a6645",
+    "_id": "69aadfca70a1fefd1bcce206",
     "examcode": "E1",
     "subjectcode": "S1",
     "subjectname": "Zoology",
-    "exam": "69a9d68ee17984242e0a663f",
+    "exam": "69aadfc970a1fefd1bcce200",
     "__v": 0,
-    "createdAt": "2026-03-05T19:16:30.710Z",
-    "updatedAt": "2026-03-05T19:16:30.710Z"
+    "createdAt": "2026-03-06T14:08:10.006Z",
+    "updatedAt": "2026-03-06T14:08:10.006Z"
   },
   {
-    "_id": "69a9d68ee17984242e0a6646",
+    "_id": "69aadfca70a1fefd1bcce207",
     "examcode": "E2",
     "subjectcode": "S1",
     "subjectname": "Zoology",
-    "exam": "69a9d68ee17984242e0a6640",
+    "exam": "69aadfc970a1fefd1bcce201",
     "__v": 0,
-    "createdAt": "2026-03-05T19:16:30.711Z",
-    "updatedAt": "2026-03-05T19:16:30.711Z"
+    "createdAt": "2026-03-06T14:08:10.006Z",
+    "updatedAt": "2026-03-06T14:08:10.006Z"
   },
   {
-    "_id": "69a9d68ee17984242e0a6647",
+    "_id": "69aadfca70a1fefd1bcce208",
     "examcode": "E3",
     "subjectcode": "S2",
     "subjectname": "Life Sciences",
-    "exam": "69a9d68ee17984242e0a6641",
+    "exam": "69aadfc970a1fefd1bcce202",
     "__v": 0,
-    "createdAt": "2026-03-05T19:16:30.711Z",
-    "updatedAt": "2026-03-05T19:16:30.711Z"
+    "createdAt": "2026-03-06T14:08:10.006Z",
+    "updatedAt": "2026-03-06T14:08:10.006Z"
   },
   {
-    "_id": "69a9d68ee17984242e0a6648",
+    "_id": "69aadfca70a1fefd1bcce209",
     "examcode": "E4",
     "subjectcode": "S1",
     "subjectname": "Zoology",
-    "exam": "69a9d68ee17984242e0a6642",
+    "exam": "69aadfc970a1fefd1bcce203",
     "__v": 0,
-    "createdAt": "2026-03-05T19:16:30.711Z",
-    "updatedAt": "2026-03-05T19:16:30.711Z"
+    "createdAt": "2026-03-06T14:08:10.007Z",
+    "updatedAt": "2026-03-06T14:08:10.007Z"
   }
 ]
