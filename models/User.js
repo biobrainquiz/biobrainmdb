@@ -18,4 +18,21 @@ userSchema.pre("save", async function () {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
+userSchema.pre("findOneAndDelete", async function () {
+
+    const filter = this.getFilter();
+
+    const User = mongoose.model("User");
+    const user = await User.findOne(filter);
+
+    if (!user) return;
+
+    const Attempt = require("./Attempt");
+
+    await cascadeDelete(Attempt, {
+        userid: user._id
+    });
+
+});
+
 module.exports = mongoose.model("User", userSchema);

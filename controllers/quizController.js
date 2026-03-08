@@ -1,9 +1,10 @@
+const ExamSession = require("../services/ExamSession");
 const getNextSequence = require("../utils/getNextSequence");
-const QuizResult = require("../models/QuizResult");
 const getDevice = require("../utils/getDevice");
 const mapCodesToNames = require("../utils/mapCodesToNames");
 const Question = require("../models/Question");
-const ExamSession = require("../services/ExamSession");
+const QuizResult = require("../models/QuizResult");
+const Attempt = require("../models/Attempt");
 
 const {
   getExamName,
@@ -94,6 +95,53 @@ exports.prepareQuiz = async (req, res) => {
   }
 };
 
+
+// PURIFIED
+exports.createOrder = async (req, res) => {
+  try {
+    const { examcode, subjectcode, unitcode, topiccode, count, difficulty } = req.body;
+    const questionCount = parseInt(count) || 10;
+
+    const examSessionObj = new ExamSession({ examcode, subjectcode, unitcode, topiccode, count, difficulty });
+    examSessionObj.userId = req.session.user.id;
+    examSessionObj.userName = req.session.user.username;
+    examSessionObj.exampaperCode = examSessionObj.getExampaperCode();
+    examSessionObj.examName = await getExamName(examcode);
+    examSessionObj.subjectName = await getSubjectName(examcode, subjectcode);
+    examSessionObj.unitName = await getUnitName(examcode, subjectcode, unitcode);
+    examSessionObj.topicName = await getTopicName(examcode, subjectcode, unitcode, topiccode);
+
+    // Fetch random questions
+    const questions = await GetRandomQuestions(examSessionObj.userId, examSessionObj.exampaperCode, examSessionObj.examCode, examSessionObj.subjectCode, examSessionObj.unitCode, examSessionObj.topicCode, examSessionObj.difficulty, examSessionObj.questionsCount);
+
+    /*const questions = await Question.aggregate([
+      {
+        $match: {
+          examcode,
+          subjectcode,
+          unitcode,
+          topiccode,
+          difficulty_level: difficulty
+        }
+      },
+      { $sample: { size: questionCount } }
+    ]);*/
+
+    examSessionObj.questions = questions;
+    examSessionObj.startedAt = new Date();
+
+    console.log(examSessionObj);
+    return res.render(
+      `pages/${getDevice(req)}/quiz`,
+      {
+        examSession: examSessionObj
+      });
+  } catch (err) {
+    console.error("Create Order Error:", err);
+    return res.status(500).send("Unable to create quiz session");
+  }
+};
+
 // PURIFIED
 exports.submitQuiz = async (req, res) => {
   try {
@@ -159,6 +207,7 @@ exports.submitQuiz = async (req, res) => {
     });
 
     await newResult.save();
+    await UpdateAttemptedTable(examSessionObj.userId, examSessionObj.exampaperCode, examSessionObj.questions);
 
     const device = getDevice(req);
 
@@ -173,23 +222,50 @@ exports.submitQuiz = async (req, res) => {
   }
 };
 
-// PURIFIED
-exports.createOrder = async (req, res) => {
-  try {
-    const { examcode, subjectcode, unitcode, topiccode, count, difficulty } = req.body;
-    const questionCount = parseInt(count) || 10;
+async function UpdateAttemptedTable(userid, exampapercode, questions) {
 
-    const examSessionObj = new ExamSession({ examcode, subjectcode, unitcode, topiccode, count, difficulty });
-    examSessionObj.userId = req.session.user.id;
-    examSessionObj.userName = req.session.user.username;
-    examSessionObj.exampaperCode = examSessionObj.getExampaperCode();
-    examSessionObj.examName = await getExamName(examcode);
-    examSessionObj.subjectName = await getSubjectName(examcode, subjectcode);
-    examSessionObj.unitName = await getUnitName(examcode, subjectcode, unitcode);
-    examSessionObj.topicName = await getTopicName(examcode, subjectcode, unitcode, topiccode);
+  // extract question ids
+  const attemptedQuestionIds = questions.map(q => q._id);
 
-    // Fetch random questions
-    const questions = await Question.aggregate([
+  // store attempted questions
+  await Attempt.updateOne(
+    { userid, exampapercode },
+    {
+      $addToSet: {
+        questionids: { $each: attemptedQuestionIds }
+      }
+    },
+    { upsert: true }
+  );
+}
+
+async function GetRandomQuestions(userid, exampapercode, examcode, subjectcode, unitcode, topiccode, difficulty, questioncount) {
+
+  // get attempted question ids
+  const attempt = await Attempt.findOne({ userid, exampapercode });
+
+  const attemptedIds = attempt ? attempt.questionids : [];
+
+  console.log(questioncount);
+  const qescount = parseInt(questioncount, 10);
+  let questions = await Question.aggregate([
+    {
+      $match: {
+        examcode,
+        subjectcode,
+        unitcode,
+        topiccode,
+        difficulty_level: difficulty,
+        _id: { $nin: attemptedIds }
+      }
+    },
+    { $sample: { size: qescount } }
+  ]);
+
+  // fallback if not enough questions
+  if (questions.length < qescount) {
+
+    const moreQuestions = await Question.aggregate([
       {
         $match: {
           examcode,
@@ -199,20 +275,10 @@ exports.createOrder = async (req, res) => {
           difficulty_level: difficulty
         }
       },
-      { $sample: { size: questionCount } }
+      { $sample: { size: qescount - questions.length } }
     ]);
 
-    examSessionObj.questions = questions;
-    examSessionObj.startedAt = new Date();
-
-    console.log(examSessionObj);
-    return res.render(
-      `pages/${getDevice(req)}/quiz`,
-      {
-        examSession: examSessionObj
-      });
-  } catch (err) {
-    console.error("Create Order Error:", err);
-    return res.status(500).send("Unable to create quiz session");
+    questions = [...questions, ...moreQuestions];
   }
-};
+  return questions;
+}
