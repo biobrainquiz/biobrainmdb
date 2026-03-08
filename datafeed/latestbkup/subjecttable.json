@@ -1,42 +1,52 @@
 [
   {
-    "_id": "69aadfca70a1fefd1bcce206",
+    "_id": "69acdec06efcdae32cd7306b",
     "examcode": "E1",
     "subjectcode": "S1",
     "subjectname": "Zoology",
-    "exam": "69aadfc970a1fefd1bcce200",
-    "__v": 0,
-    "createdAt": "2026-03-06T14:08:10.006Z",
-    "updatedAt": "2026-03-06T14:08:10.006Z"
+    "exam": "69acdec06efcdae32cd73066",
+    "createdAt": "2026-03-08T02:28:16.288Z",
+    "updatedAt": "2026-03-08T02:28:16.288Z",
+    "__v": 0
   },
   {
-    "_id": "69aadfca70a1fefd1bcce207",
+    "_id": "69acdec06efcdae32cd7306c",
     "examcode": "E2",
     "subjectcode": "S1",
     "subjectname": "Zoology",
-    "exam": "69aadfc970a1fefd1bcce201",
-    "__v": 0,
-    "createdAt": "2026-03-06T14:08:10.006Z",
-    "updatedAt": "2026-03-06T14:08:10.006Z"
+    "exam": "69acdec06efcdae32cd73067",
+    "createdAt": "2026-03-08T02:28:16.289Z",
+    "updatedAt": "2026-03-08T02:28:16.289Z",
+    "__v": 0
   },
   {
-    "_id": "69aadfca70a1fefd1bcce208",
+    "_id": "69acdec06efcdae32cd7306d",
     "examcode": "E3",
     "subjectcode": "S2",
     "subjectname": "Life Sciences",
-    "exam": "69aadfc970a1fefd1bcce202",
-    "__v": 0,
-    "createdAt": "2026-03-06T14:08:10.006Z",
-    "updatedAt": "2026-03-06T14:08:10.006Z"
+    "exam": "69acdec06efcdae32cd73068",
+    "createdAt": "2026-03-08T02:28:16.289Z",
+    "updatedAt": "2026-03-08T02:28:16.289Z",
+    "__v": 0
   },
   {
-    "_id": "69aadfca70a1fefd1bcce209",
+    "_id": "69acdec06efcdae32cd7306e",
     "examcode": "E4",
     "subjectcode": "S1",
     "subjectname": "Zoology",
-    "exam": "69aadfc970a1fefd1bcce203",
-    "__v": 0,
-    "createdAt": "2026-03-06T14:08:10.007Z",
-    "updatedAt": "2026-03-06T14:08:10.007Z"
+    "exam": "69acdec06efcdae32cd73069",
+    "createdAt": "2026-03-08T02:28:16.289Z",
+    "updatedAt": "2026-03-08T02:28:16.289Z",
+    "__v": 0
+  },
+  {
+    "_id": "69acdf3c6efcdae32cd731b5",
+    "examcode": "E5",
+    "subjectcode": "S1",
+    "subjectname": "Maths",
+    "exam": "69acdf1e6efcdae32cd7319c",
+    "createdAt": "2026-03-08T02:30:20.615Z",
+    "updatedAt": "2026-03-08T02:30:20.615Z",
+    "__v": 0
   }
 ]

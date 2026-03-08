@@ -58,18 +58,16 @@ router.post("/units/update/:id", unitController.update);
 router.delete("/units/:id", unitController.delete);
 router.get("/api/subjects/:examcode", unitController.getSubjectsByExam);
 
-/*
+
 // =====================
 // TOPICS
 // =====================
 router.get("/topics", topicController.list);
-router.get("/topics/new", topicController.showCreate);
-router.post("/topics", topicController.create);
-router.get("/topics/:id/edit", topicController.showEdit);
-router.post("/topics/:id", topicController.update);
-router.post("/topics/:id/delete", topicController.remove);
+router.post("/topics/create", topicController.create);
+router.post("/topics/update/:id", topicController.update);
+router.post("/topics/delete", topicController.delete);
 
-// =====================
+/*// =====================
 // QUESTIONS
 // =====================
 router.get("/questions", questionController.list);

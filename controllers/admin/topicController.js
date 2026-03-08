@@ -1,44 +1,103 @@
-const Topic = require("../../models/Topic");
-const Exam = require("../../models/Exam");
+const User = require("../../models/User");
 const Subject = require("../../models/Subject");
 const Unit = require("../../models/Unit");
+const Topic = require("../../models/Topic");
+const Question = require("../../models/Question");
+const QuizResult = require("../../models/QuizResult");
+const Payment = require("../../models/Payment"); // if exists
+const Exam = require("../../models/Exam");
+const getDevice = require("../../utils/getDevice"); // if you use device-based views
 
+
+// Render topic page
 exports.list = async (req, res) => {
-  const topics = await Topic.find().populate("exam subject unit");
-  res.render(`pages/${getDevice(req)}/admin/topics`, { topics });
+  try {
+    /*const topics = await Topic.find()
+      .populate("exam")
+      .populate("subject")
+      .populate("unit")
+      .lean();*/
+
+
+    const exams = await Exam.find().sort({ examname: 1 });
+
+    const subjects = await Subject.find().populate("exam").sort({ subjectname: 1 });
+
+    const units = await Unit.find()
+      .populate("exam")
+      .populate("subject")
+      .sort({ createdAt: -1 });
+
+    const topics = await Topic.find()
+      .populate("exam")
+      .populate("subject")
+      .populate("unit")
+      .sort({ createdAt: -1 });
+
+    res.render(`pages/${getDevice(req)}/admin/topics/topic`, { topics, exams, subjects, units });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
 };
 
-exports.showCreate = async (req, res) => {
-  const exams = await Exam.find();
-  const subjects = await Subject.find();
-  const units = await Unit.find();
-  res.render(`pages/${getDevice(req)}/admin/addTopic`, { exams, subjects, units });
-};
-
+// Create topic
 exports.create = async (req, res) => {
-  await Topic.create(req.body);
-  res.redirect("/admin/topics");
+  try {
+    const { examId, subId, unitId, examCode, subCode, unitCode, topiccode, topicname } = req.body;
+    if (!examId || !subId || !unitId || !topiccode || !topicname) {
+      return res.json({ success: false, message: "All fields are required" });
+    }
+
+    const existing = await Topic.findOne({ unit: unitId, topiccode });
+    if (existing) return res.json({ success: false, message: "Topic code already exists for this unit" });
+
+    console.log({ exam: examId, subject: subId, unit: unitId, examcode: examCode, subjectcode: subCode, unitcode: unitCode, topiccode, topicname });
+
+    const newTopic = await Topic.create({
+      exam: examId,
+      subject: subId,
+      unit: unitId,
+      examcode: examCode,
+      subjectcode: subCode,
+      unitcode: unitCode,
+      topiccode,
+      topicname
+    });
+
+    res.json({ success: true, topic: newTopic });
+  } catch (err) {
+    console.error(err);
+    res.json({ success: false, message: "Server error" });
+  }
 };
 
-exports.showEdit = async (req, res) => {
-  const topic = await Topic.findById(req.params.id);
-  const exams = await Exam.find();
-  const subjects = await Subject.find();
-  const units = await Unit.find();
-  res.render(`pages/${getDevice(req)}/admin/editTopic`, {
-    topic,
-    exams,
-    subjects,
-    units
-  });
-};
-
+// Update topic name
 exports.update = async (req, res) => {
-  await Topic.findByIdAndUpdate(req.params.id, req.body);
-  res.redirect("/admin/topics");
+  try {
+    const id = req.params.id;
+    const { topicname } = req.body;
+    if (!topicname) return res.json({ success: false, message: "Topic name required" });
+
+    await Topic.findByIdAndUpdate(id, { topicname });
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.json({ success: false, message: "Server error" });
+  }
 };
 
-exports.remove = async (req, res) => {
-  await Topic.findByIdAndDelete(req.params.id);
-  res.redirect("/admin/topics");
+// DELETE via POST
+exports.delete = async (req, res) => {
+  try {
+    const { id } = req.body;  // <-- receive topic ID via POST body
+    if (!id) return res.json({ success: false, message: "Topic ID required" });
+
+    await Topic.findByIdAndDelete(id);
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.json({ success: false, message: "Server error" });
+  }
 };

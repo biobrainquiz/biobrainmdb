@@ -231,11 +231,6 @@ app.use((req, res) => {
 
 
 const liveLogs = require("./utils/liveLogs");
-console.log(liveLogs);
-
-
-
-
 
 const http = require("http");
 const WebSocket = require("ws");

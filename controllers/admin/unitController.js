@@ -11,15 +11,18 @@ exports.list = async (req, res) => {
 
     try {
 
+        const exams = await Exam.find().sort({ examname: 1 });
+
+        const subjects = await Subject.find().populate("exam").sort({ subjectname: 1 });
+
         const units = await Unit.find()
             .populate("exam")
             .populate("subject")
             .sort({ createdAt: -1 });
 
-        const exams = await Exam.find().sort({ examname: 1 });
+        
 
-        const subjects = await Subject.find().populate("exam").sort({ subjectname: 1 });
-
+        
         res.render(`pages/${getDevice(req)}/admin/units/unit`, {
              units,
             exams,

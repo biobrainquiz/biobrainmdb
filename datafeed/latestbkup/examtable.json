@@ -1,42 +1,42 @@
 [
   {
-    "_id": "69aadfc970a1fefd1bcce200",
+    "_id": "69acdec06efcdae32cd73066",
     "examname": "NEET",
     "examcode": "E1",
-    "__v": 0,
-    "createdAt": "2026-03-06T14:08:09.991Z",
-    "updatedAt": "2026-03-06T14:08:09.991Z"
+    "createdAt": "2026-03-08T02:28:16.277Z",
+    "updatedAt": "2026-03-08T02:28:16.277Z",
+    "__v": 0
   },
   {
-    "_id": "69aadfc970a1fefd1bcce201",
+    "_id": "69acdec06efcdae32cd73067",
     "examname": "DL/JL/Asst.Prof.",
     "examcode": "E2",
-    "__v": 0,
-    "createdAt": "2026-03-06T14:08:09.995Z",
-    "updatedAt": "2026-03-06T14:08:09.995Z"
+    "createdAt": "2026-03-08T02:28:16.279Z",
+    "updatedAt": "2026-03-08T02:28:16.279Z",
+    "__v": 0
   },
   {
-    "_id": "69aadfc970a1fefd1bcce202",
+    "_id": "69acdec06efcdae32cd73068",
     "examname": "CSIR NET",
     "examcode": "E3",
-    "__v": 0,
-    "createdAt": "2026-03-06T14:08:09.995Z",
-    "updatedAt": "2026-03-06T14:08:09.995Z"
+    "createdAt": "2026-03-08T02:28:16.279Z",
+    "updatedAt": "2026-03-08T02:28:16.279Z",
+    "__v": 0
   },
   {
-    "_id": "69aadfc970a1fefd1bcce203",
+    "_id": "69acdec06efcdae32cd73069",
     "examname": "GATE",
     "examcode": "E4",
-    "__v": 0,
-    "createdAt": "2026-03-06T14:08:09.995Z",
-    "updatedAt": "2026-03-06T14:08:09.995Z"
+    "createdAt": "2026-03-08T02:28:16.279Z",
+    "updatedAt": "2026-03-08T02:28:16.279Z",
+    "__v": 0
   },
   {
-    "_id": "69aadfc970a1fefd1bcce204",
-    "examname": "PHD DS",
+    "_id": "69acdf1e6efcdae32cd7319c",
+    "examname": "SSC",
     "examcode": "E5",
-    "__v": 0,
-    "createdAt": "2026-03-06T14:08:09.995Z",
-    "updatedAt": "2026-03-06T14:08:09.995Z"
+    "createdAt": "2026-03-08T02:29:50.334Z",
+    "updatedAt": "2026-03-08T02:29:50.334Z",
+    "__v": 0
   }
 ]
