@@ -2777,3 +2777,257 @@ username is not defined
 2026-03-08 15:27:01 [INFO]: GET /admin/topics ::1 
 2026-03-08 15:27:01 [INFO]: GET /css/adminStyle.css ::1 
 2026-03-08 15:28:25 [INFO]: GET /keep-session-alive ::1 
+2026-03-08 17:14:08 [INFO]: 🚀 Server running on port 3000 
+2026-03-08 17:14:08 [INFO]: ✅ Connected to MongoDB 
+2026-03-08 17:14:08 [INFO]: 🔥  Forced seeding enabled. 
+2026-03-08 17:14:08 [INFO]: ⚠ Clearing old Questions... 
+2026-03-08 17:14:08 [INFO]: ⚠ Clearing old Topics... 
+2026-03-08 17:14:08 [INFO]: ⚠ Clearing old Units... 
+2026-03-08 17:14:08 [INFO]: ⚠ Clearing old Subjects... 
+2026-03-08 17:14:08 [INFO]: ⚠ Clearing old Exams... 
+2026-03-08 17:14:08 [INFO]: ⚠ Clearing old Payments... 
+2026-03-08 17:14:08 [INFO]: ⚡ Seeding database... 
+2026-03-08 17:14:08 [INFO]: 🔥 Exam seeded: 4 successfully! 
+2026-03-08 17:14:08 [INFO]: 🔥 Subject seeded: 4 successfully! 
+2026-03-08 17:14:09 [INFO]: 🔥 Unit seeded: 11 successfully! 
+2026-03-08 17:14:09 [INFO]: 🔥 Topics seeded: 49 successfully! 
+2026-03-08 17:14:09 [INFO]: 🔥 Questions seeded: 460 successfully! 
+2026-03-08 17:14:09 [INFO]: ✅ All data seeded successfully! 
+2026-03-08 17:14:12 [INFO]: GET / ::1 
+2026-03-08 17:14:12 [INFO]: GET /css/desktopStyle.css ::1 
+2026-03-08 17:14:12 [INFO]: GET /js/navibar.js ::1 
+2026-03-08 17:14:12 [INFO]: GET /images/biobrain-logo1.png ::1 
+2026-03-08 17:14:12 [INFO]: GET /images/dna-pattern.png ::1 
+2026-03-08 17:14:12 [INFO]: GET /images/molucule-structure.png ::1 
+2026-03-08 17:14:14 [INFO]: GET /admin ::1 
+2026-03-08 17:14:14 [INFO]: GET /login ::1 
+2026-03-08 17:14:14 [INFO]: GET /css/desktopStyle.css ::1 
+2026-03-08 17:14:14 [INFO]: GET /images/biobrain-logo1.png ::1 
+2026-03-08 17:14:14 [INFO]: GET /js/navibar.js ::1 
+2026-03-08 17:14:25 [INFO]: POST /login ::1 
+2026-03-08 17:14:26 [INFO]: GET /admin ::1 
+2026-03-08 17:14:26 [INFO]: GET /css/adminStyle.css ::1 
+2026-03-08 17:14:26 [INFO]: GET /js/admin.js ::1 
+2026-03-08 17:14:29 [INFO]: GET / ::1 
+2026-03-08 17:14:29 [INFO]: GET /css/desktopStyle.css ::1 
+2026-03-08 17:14:29 [INFO]: GET /images/biobrain-logo1.png ::1 
+2026-03-08 17:14:29 [INFO]: GET /js/navibar.js ::1 
+2026-03-08 17:14:31 [INFO]: GET /quiz/prepare/E4/S1 ::1 
+2026-03-08 17:14:31 [INFO]: GET /css/desktopStyle.css ::1 
+2026-03-08 17:14:31 [INFO]: GET /images/biobrain-logo1.png ::1 
+2026-03-08 17:14:31 [INFO]: GET /js/navibar.js ::1 
+2026-03-08 17:14:31 [INFO]: GET /units/E4/S1 ::1 
+2026-03-08 17:14:34 [INFO]: GET /topics/E4/S1/U1 ::1 
+2026-03-08 17:14:37 [INFO]: POST /quiz/createorder ::1 
+2026-03-08 17:14:37 [INFO]: GET /css/desktopStyle.css ::1 
+2026-03-08 17:14:38 [INFO]: POST /quiz/submit ::1 
+2026-03-08 17:14:39 [INFO]: GET / ::1 
+2026-03-08 17:14:39 [INFO]: GET /css/desktopStyle.css ::1 
+2026-03-08 17:14:39 [INFO]: GET /images/biobrain-logo1.png ::1 
+2026-03-08 17:14:39 [INFO]: GET /js/navibar.js ::1 
+2026-03-08 17:14:42 [INFO]: GET /quiz/prepare/E4/S1 ::1 
+2026-03-08 17:14:42 [INFO]: GET /css/desktopStyle.css ::1 
+2026-03-08 17:14:42 [INFO]: GET /images/biobrain-logo1.png ::1 
+2026-03-08 17:14:42 [INFO]: GET /js/navibar.js ::1 
+2026-03-08 17:14:42 [INFO]: GET /units/E4/S1 ::1 
+2026-03-08 17:16:26 [INFO]: GET /keep-session-alive ::1 
+2026-03-08 17:18:26 [INFO]: GET /keep-session-alive ::1 
+2026-03-08 17:19:42 [INFO]: GET /keep-session-alive ::1 
+2026-03-08 17:21:21 [INFO]: 🚀 Server running on port 3000 
+2026-03-08 17:21:21 [INFO]: ✅ Connected to MongoDB 
+2026-03-08 17:21:21 [INFO]: 🔥  Forced seeding enabled. 
+2026-03-08 17:21:21 [INFO]: ⚠ Clearing old Questions... 
+2026-03-08 17:21:21 [INFO]: ⚠ Clearing old Topics... 
+2026-03-08 17:21:21 [INFO]: ⚠ Clearing old Units... 
+2026-03-08 17:21:21 [INFO]: ⚠ Clearing old Subjects... 
+2026-03-08 17:21:21 [INFO]: ⚠ Clearing old Exams... 
+2026-03-08 17:21:21 [INFO]: ⚠ Clearing old Payments... 
+2026-03-08 17:21:21 [INFO]: ⚡ Seeding database... 
+2026-03-08 17:21:21 [INFO]: 🔥 Exam seeded: 4 successfully! 
+2026-03-08 17:21:21 [INFO]: 🔥 Subject seeded: 4 successfully! 
+2026-03-08 17:21:21 [INFO]: 🔥 Unit seeded: 11 successfully! 
+2026-03-08 17:21:21 [INFO]: 🔥 Topics seeded: 49 successfully! 
+2026-03-08 17:21:21 [INFO]: 🔥 Questions seeded: 460 successfully! 
+2026-03-08 17:21:21 [INFO]: ✅ All data seeded successfully! 
+2026-03-08 17:21:26 [INFO]: GET /keep-session-alive ::1 
+2026-03-08 17:21:29 [INFO]: GET / ::1 
+2026-03-08 17:21:29 [INFO]: GET /css/desktopStyle.css ::1 
+2026-03-08 17:21:29 [INFO]: GET /images/biobrain-logo1.png ::1 
+2026-03-08 17:21:29 [INFO]: GET /js/navibar.js ::1 
+2026-03-08 17:21:31 [INFO]: GET /admin ::1 
+2026-03-08 17:21:31 [INFO]: GET /css/adminStyle.css ::1 
+2026-03-08 17:21:31 [INFO]: GET /js/admin.js ::1 
+2026-03-08 17:21:33 [INFO]: GET /admin/exams ::1 
+2026-03-08 17:21:33 [INFO]: GET /css/adminStyle.css ::1 
+2026-03-08 17:21:33 [INFO]: GET /admin/subjects ::1 
+2026-03-08 17:21:33 [INFO]: GET /css/adminStyle.css ::1 
+2026-03-08 17:21:34 [INFO]: GET /admin/units ::1 
+2026-03-08 17:21:34 [INFO]: GET /css/adminStyle.css ::1 
+2026-03-08 17:21:34 [INFO]: GET /admin/topics ::1 
+2026-03-08 17:21:35 [INFO]: GET /css/adminStyle.css ::1 
+2026-03-08 17:21:37 [INFO]: GET / ::1 
+2026-03-08 17:21:37 [INFO]: GET /css/desktopStyle.css ::1 
+2026-03-08 17:21:37 [INFO]: GET /images/biobrain-logo1.png ::1 
+2026-03-08 17:21:37 [INFO]: GET /js/navibar.js ::1 
+2026-03-08 17:21:40 [INFO]: GET /quiz/prepare/E4/S1 ::1 
+2026-03-08 17:21:40 [ERROR]: ReferenceError: D:\Projects\BioBrainMdb\views\pages\desktop\startquiz.ejs:264
+    262|                 <h4>📊 Your Last 50 Exam Performances</h4>
+    263| 
+ >> 264|                 <% if (examResults && examResults.length> 0) { %>
+    265|                     <div class="table-container">
+    266|                         <table>
+    267|                             <thead>
+
+examResults is not defined
+    at eval ("D:\\Projects\\BioBrainMdb\\views\\pages\\desktop\\startquiz.ejs":15:8)
+    at startquiz (D:\Projects\BioBrainMdb\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (D:\Projects\BioBrainMdb\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (D:\Projects\BioBrainMdb\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (D:\Projects\BioBrainMdb\node_modules\express\lib\view.js:139:8)
+    at tryRender (D:\Projects\BioBrainMdb\node_modules\express\lib\application.js:627:10)
+    at app.render (D:\Projects\BioBrainMdb\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (D:\Projects\BioBrainMdb\node_modules\express\lib\response.js:923:7)
+    at exports.prepareQuiz (D:\Projects\BioBrainMdb\controllers\quizController.js:72:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5) {"error":"D:\\Projects\\BioBrainMdb\\views\\pages\\desktop\\startquiz.ejs:264\n    262|                 <h4>📊 Your Last 50 Exam Performances</h4>\r\n    263| \r\n >> 264|                 <% if (examResults && examResults.length> 0) { %>\r\n    265|                     <div class=\"table-container\">\r\n    266|                         <table>\r\n    267|                             <thead>\r\n\nexamResults is not defined"}
+2026-03-08 17:23:26 [INFO]: GET /keep-session-alive ::1 
+2026-03-08 17:25:51 [INFO]: 🚀 Server running on port 3000 
+2026-03-08 17:25:51 [INFO]: ✅ Connected to MongoDB 
+2026-03-08 17:25:51 [INFO]: 🔥  Forced seeding enabled. 
+2026-03-08 17:25:51 [INFO]: ⚠ Clearing old Questions... 
+2026-03-08 17:25:52 [INFO]: ⚠ Clearing old Topics... 
+2026-03-08 17:25:52 [INFO]: ⚠ Clearing old Units... 
+2026-03-08 17:25:52 [INFO]: ⚠ Clearing old Subjects... 
+2026-03-08 17:25:52 [INFO]: ⚠ Clearing old Exams... 
+2026-03-08 17:25:52 [INFO]: ⚠ Clearing old Payments... 
+2026-03-08 17:25:52 [INFO]: ⚡ Seeding database... 
+2026-03-08 17:25:52 [INFO]: 🔥 Exam seeded: 4 successfully! 
+2026-03-08 17:25:52 [INFO]: 🔥 Subject seeded: 4 successfully! 
+2026-03-08 17:25:52 [INFO]: 🔥 Unit seeded: 11 successfully! 
+2026-03-08 17:25:52 [INFO]: 🔥 Topics seeded: 49 successfully! 
+2026-03-08 17:25:52 [INFO]: 🔥 Questions seeded: 460 successfully! 
+2026-03-08 17:25:52 [INFO]: ✅ All data seeded successfully! 
+2026-03-08 17:25:55 [INFO]: GET / ::1 
+2026-03-08 17:25:55 [INFO]: GET /css/desktopStyle.css ::1 
+2026-03-08 17:25:55 [INFO]: GET /images/biobrain-logo1.png ::1 
+2026-03-08 17:25:55 [INFO]: GET /js/navibar.js ::1 
+2026-03-08 17:25:55 [INFO]: GET /images/dna-pattern.png ::1 
+2026-03-08 17:25:55 [INFO]: GET /images/molucule-structure.png ::1 
+2026-03-08 17:25:57 [INFO]: GET /admin ::1 
+2026-03-08 17:25:57 [INFO]: GET /css/adminStyle.css ::1 
+2026-03-08 17:25:57 [INFO]: GET /js/admin.js ::1 
+2026-03-08 17:25:58 [INFO]: GET / ::1 
+2026-03-08 17:25:58 [INFO]: GET /css/desktopStyle.css ::1 
+2026-03-08 17:25:58 [INFO]: GET /images/biobrain-logo1.png ::1 
+2026-03-08 17:25:58 [INFO]: GET /js/navibar.js ::1 
+2026-03-08 17:25:59 [INFO]: GET /quiz/prepare/E4/S1 ::1 
+2026-03-08 17:26:00 [INFO]: GET /css/desktopStyle.css ::1 
+2026-03-08 17:26:00 [INFO]: GET /images/biobrain-logo1.png ::1 
+2026-03-08 17:26:00 [INFO]: GET /js/navibar.js ::1 
+2026-03-08 17:26:00 [INFO]: GET /units/E4/S1 ::1 
+2026-03-08 17:26:02 [INFO]: GET /topics/E4/S1/U1 ::1 
+2026-03-08 17:26:04 [INFO]: POST /quiz/createorder ::1 
+2026-03-08 17:26:04 [INFO]: GET /css/desktopStyle.css ::1 
+2026-03-08 17:26:06 [INFO]: POST /quiz/submit ::1 
+2026-03-08 17:26:07 [INFO]: GET / ::1 
+2026-03-08 17:26:07 [INFO]: GET /css/desktopStyle.css ::1 
+2026-03-08 17:26:07 [INFO]: GET /images/biobrain-logo1.png ::1 
+2026-03-08 17:26:07 [INFO]: GET /js/navibar.js ::1 
+2026-03-08 17:26:10 [INFO]: GET /quiz/prepare/E4/S1 ::1 
+2026-03-08 17:26:10 [INFO]: GET /css/desktopStyle.css ::1 
+2026-03-08 17:26:10 [INFO]: GET /images/biobrain-logo1.png ::1 
+2026-03-08 17:26:10 [INFO]: GET /js/navibar.js ::1 
+2026-03-08 17:26:10 [INFO]: GET /units/E4/S1 ::1 
+2026-03-08 17:26:14 [INFO]: GET / ::1 
+2026-03-08 17:26:14 [INFO]: GET /css/desktopStyle.css ::1 
+2026-03-08 17:26:14 [INFO]: GET /images/biobrain-logo1.png ::1 
+2026-03-08 17:26:14 [INFO]: GET /js/navibar.js ::1 
+2026-03-08 17:26:15 [INFO]: GET /admin ::1 
+2026-03-08 17:26:15 [INFO]: GET /css/adminStyle.css ::1 
+2026-03-08 17:26:15 [INFO]: GET /js/admin.js ::1 
+2026-03-08 17:26:17 [INFO]: GET /admin/exams ::1 
+2026-03-08 17:26:17 [INFO]: GET /css/adminStyle.css ::1 
+2026-03-08 17:26:17 [INFO]: GET /admin/subjects ::1 
+2026-03-08 17:26:18 [INFO]: GET /css/adminStyle.css ::1 
+2026-03-08 17:26:19 [INFO]: GET /admin/units ::1 
+2026-03-08 17:26:19 [INFO]: GET /css/adminStyle.css ::1 
+2026-03-08 17:26:19 [INFO]: GET /admin/topics ::1 
+2026-03-08 17:26:19 [INFO]: GET /css/adminStyle.css ::1 
+2026-03-08 17:26:20 [INFO]: GET /admin/questions ::1 
+2026-03-08 17:26:21 [INFO]: GET / ::1 
+2026-03-08 17:26:21 [INFO]: GET /css/desktopStyle.css ::1 
+2026-03-08 17:26:21 [INFO]: GET /images/biobrain-logo1.png ::1 
+2026-03-08 17:26:21 [INFO]: GET /js/navibar.js ::1 
+2026-03-08 17:26:24 [INFO]: GET /quiz/prepare/E4/S1 ::1 
+2026-03-08 17:26:24 [INFO]: GET /css/desktopStyle.css ::1 
+2026-03-08 17:26:24 [INFO]: GET /images/biobrain-logo1.png ::1 
+2026-03-08 17:26:24 [INFO]: GET /js/navibar.js ::1 
+2026-03-08 17:26:24 [INFO]: GET /units/E4/S1 ::1 
+2026-03-08 17:26:26 [INFO]: GET /quiz/prepare/E4/S1?page=2 ::1 
+2026-03-08 17:26:26 [INFO]: GET /css/desktopStyle.css ::1 
+2026-03-08 17:26:26 [INFO]: GET /images/biobrain-logo1.png ::1 
+2026-03-08 17:26:26 [INFO]: GET /js/navibar.js ::1 
+2026-03-08 17:26:27 [INFO]: GET /units/E4/S1 ::1 
+2026-03-08 17:26:27 [INFO]: GET /quiz/prepare/E4/S1?page=3 ::1 
+2026-03-08 17:26:28 [INFO]: GET /css/desktopStyle.css ::1 
+2026-03-08 17:26:28 [INFO]: GET /images/biobrain-logo1.png ::1 
+2026-03-08 17:26:28 [INFO]: GET /js/navibar.js ::1 
+2026-03-08 17:26:28 [INFO]: GET /units/E4/S1 ::1 
+2026-03-08 17:26:30 [INFO]: GET /topics/E4/S1/U1 ::1 
+2026-03-08 17:26:36 [INFO]: POST /quiz/createorder ::1 
+2026-03-08 17:26:36 [INFO]: GET /css/desktopStyle.css ::1 
+2026-03-08 17:26:42 [INFO]: POST /quiz/submit ::1 
+2026-03-08 17:26:43 [INFO]: GET / ::1 
+2026-03-08 17:26:43 [INFO]: GET /css/desktopStyle.css ::1 
+2026-03-08 17:26:43 [INFO]: GET /images/biobrain-logo1.png ::1 
+2026-03-08 17:26:43 [INFO]: GET /js/navibar.js ::1 
+2026-03-08 17:26:45 [INFO]: GET /quiz/prepare/E4/S1 ::1 
+2026-03-08 17:26:45 [INFO]: GET /css/desktopStyle.css ::1 
+2026-03-08 17:26:45 [INFO]: GET /images/biobrain-logo1.png ::1 
+2026-03-08 17:26:45 [INFO]: GET /js/navibar.js ::1 
+2026-03-08 17:26:46 [INFO]: GET /units/E4/S1 ::1 
+2026-03-08 17:31:41 [INFO]: 🚀 Server running on port 3000 
+2026-03-08 17:31:41 [INFO]: ✅ Connected to MongoDB 
+2026-03-08 17:31:41 [INFO]: 🔥  Forced seeding enabled. 
+2026-03-08 17:31:41 [INFO]: ⚠ Clearing old Questions... 
+2026-03-08 17:31:41 [INFO]: ⚠ Clearing old Topics... 
+2026-03-08 17:31:41 [INFO]: ⚠ Clearing old Units... 
+2026-03-08 17:31:41 [INFO]: ⚠ Clearing old Subjects... 
+2026-03-08 17:31:41 [INFO]: ⚠ Clearing old Exams... 
+2026-03-08 17:31:41 [INFO]: ⚠ Clearing old Payments... 
+2026-03-08 17:31:41 [INFO]: ⚡ Seeding database... 
+2026-03-08 17:31:41 [INFO]: 🔥 Exam seeded: 4 successfully! 
+2026-03-08 17:31:41 [INFO]: 🔥 Subject seeded: 4 successfully! 
+2026-03-08 17:31:41 [INFO]: 🔥 Unit seeded: 11 successfully! 
+2026-03-08 17:31:41 [INFO]: 🔥 Topics seeded: 49 successfully! 
+2026-03-08 17:31:41 [INFO]: 🔥 Questions seeded: 460 successfully! 
+2026-03-08 17:31:41 [INFO]: ✅ All data seeded successfully! 
+2026-03-08 17:31:45 [INFO]: GET /keep-session-alive ::1 
+2026-03-08 17:31:48 [INFO]: GET / ::1 
+2026-03-08 17:31:48 [INFO]: GET /css/desktopStyle.css ::1 
+2026-03-08 17:31:48 [INFO]: GET /images/biobrain-logo1.png ::1 
+2026-03-08 17:31:48 [INFO]: GET /js/navibar.js ::1 
+2026-03-08 17:31:48 [INFO]: GET /images/dna-pattern.png ::1 
+2026-03-08 17:31:48 [INFO]: GET /images/molucule-structure.png ::1 
+2026-03-08 17:31:50 [INFO]: GET /quiz/prepare/E4/S1 ::1 
+2026-03-08 17:31:50 [INFO]: GET /css/desktopStyle.css ::1 
+2026-03-08 17:31:50 [INFO]: GET /images/biobrain-logo1.png ::1 
+2026-03-08 17:31:50 [INFO]: GET /js/navibar.js ::1 
+2026-03-08 17:31:51 [INFO]: GET /units/E4/S1 ::1 
+2026-03-08 17:32:00 [INFO]: GET /topics/E4/S1/U1 ::1 
+2026-03-08 17:32:05 [INFO]: POST /quiz/createorder ::1 
+2026-03-08 17:32:05 [INFO]: GET /css/desktopStyle.css ::1 
+2026-03-08 17:32:08 [INFO]: POST /quiz/submit ::1 
+2026-03-08 17:32:09 [INFO]: GET / ::1 
+2026-03-08 17:32:09 [INFO]: GET /css/desktopStyle.css ::1 
+2026-03-08 17:32:09 [INFO]: GET /images/biobrain-logo1.png ::1 
+2026-03-08 17:32:09 [INFO]: GET /js/navibar.js ::1 
+2026-03-08 17:32:14 [INFO]: GET /admin ::1 
+2026-03-08 17:32:14 [INFO]: GET /css/adminStyle.css ::1 
+2026-03-08 17:32:14 [INFO]: GET /js/admin.js ::1 
+2026-03-08 17:32:15 [INFO]: GET /admin/subjects ::1 
+2026-03-08 17:32:15 [INFO]: GET /css/adminStyle.css ::1 
+2026-03-08 17:32:16 [INFO]: GET /admin/units ::1 
+2026-03-08 17:32:16 [INFO]: GET /css/adminStyle.css ::1 
+2026-03-08 17:32:16 [INFO]: GET /admin/topics ::1 
+2026-03-08 17:32:16 [INFO]: GET /css/adminStyle.css ::1 
+2026-03-08 17:32:19 [INFO]: GET /admin/questions ::1 
