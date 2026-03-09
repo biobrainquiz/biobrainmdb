@@ -8,7 +8,6 @@ const Exam = require("../../models/Exam");
 const Payment = require("../../models/Payment"); // if exists
 const getDevice = require("../../utils/getDevice"); // if you use device-based views
 
-
 // ================= LIST =================
 
 exports.list = async (req, res) => {
@@ -20,29 +19,19 @@ exports.list = async (req, res) => {
     const units = await Unit.find()
       .populate("exam")
       .populate("subject")
-      .sort({ unitname: 1});
+      .sort({ unitname: 1 });
     const topics = await Topic.find()
       .populate("exam")
       .populate("subject")
       .populate("unit")
       .sort({ topicname: 1 });
 
-    const page = parseInt(req.query.page) || 1;
-    const limit = 25;
-    const skip = (page - 1) * limit;
-
-    const questions = await Question
-      .find()
+    const questions = await Question.find()
       .populate("exam")
       .populate("subject")
       .populate("unit")
       .populate("topic")
-      .skip(skip)
-      .limit(limit)
       .sort({ qno: 1 });
-
-    const total = await Question.countDocuments();
-    const pages = Math.ceil(total / limit);
 
     res.render(`pages/${getDevice(req)}/admin/questions/question`, {
       exams,
@@ -50,22 +39,12 @@ exports.list = async (req, res) => {
       units,
       topics,
       questions,
-      pagination: {
-        page,
-        pages,
-        prev: page > 1 ? page - 1 : null,
-        next: page < pages ? page + 1 : null
-      }
-
     });
 
   } catch (err) {
-
     console.error(err);
     res.status(500).send("Server Error");
-
   }
-
 };
 
 
