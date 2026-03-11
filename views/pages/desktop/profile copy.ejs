@@ -168,7 +168,55 @@
                 flex-direction: column;
             }
         }
-    </style>
+
+
+.profile-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 25px;
+    max-width: 400px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.profile-card h2 {
+    margin: 0;
+    font-size: 22px;
+    color: #2c3e50;
+}
+
+.profile-card p {
+    margin: 4px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.profile-card .roles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.profile-card .role-badge {
+    background: #4f8ef7;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    transition: transform 0.2s;
+}
+
+.profile-card .role-badge:hover {
+    transform: scale(1.1);
+    cursor: default;
+}
+</style>
+
 
 
 
@@ -181,16 +229,20 @@
 <div class="profile-wrapper">
 <div class="container">
 
-    <!-- USER INFO -->
-    <div class="profile-card">
-        <div>
-            <h2><%= user.username %></h2>
-            <p><strong>Email:</strong> <%= user.email %></p>
-            <p><strong>Member Since:</strong> <%= new Date(user.userCreatedOn).toDateString() %></p>
-            <p><strong>Roles:</strong> <%= user.roles.map(role => role.role || role).join(', ') %></p>
-        </div>
-        <div class="badge">BioBrain Explorer 🚀</div>
+
+    
+<div class="profile-card">
+    <h2><%= user.username %></h2>
+    <p><strong>Email:</strong> <%= user.email %></p>
+    <p><strong>Member Since:</strong> <%= new Date(user.userCreatedOn).toDateString() %></p>
+    <p><strong>Roles:</strong></p>
+    <div class="roles">
+        <% user.roles.forEach(role => { %>
+            <span class="role-badge"><%= role.role || role %></span>
+        <% }) %>
     </div>
+</div>
+    
 
     <!-- STATS -->
     <div class="stats-grid">

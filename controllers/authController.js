@@ -1,5 +1,5 @@
 const User = require("../models/User");
-const Role = require("../models/Role"); 
+const Role = require("../models/Role");
 const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
 const { Resend } = require("resend");
@@ -17,7 +17,8 @@ exports.login = async (req, res) => {
         const user = await User.findOne({
             $or: [
                 { email: identifier },
-                { mobile: identifier }
+                { mobile: identifier },
+                { username: identifier }
             ]
         }).populate("roles");
 
@@ -44,7 +45,7 @@ exports.login = async (req, res) => {
         req.session.user = {
             id: user._id,
             username: user.username,
-            roles: user.roles || ["user"]
+            roles: user.roles 
         };
 
         // 4️⃣ Redirect support
@@ -57,8 +58,6 @@ exports.login = async (req, res) => {
         });
 
     } catch (err) {
-        //console.error("Login Error:", err);
-
         logger.error({
             message: "Login Error",
             error: err.message,
@@ -72,8 +71,6 @@ exports.login = async (req, res) => {
         });
     }
 };
-
-
 
 
 exports.register = async (req, res) => {

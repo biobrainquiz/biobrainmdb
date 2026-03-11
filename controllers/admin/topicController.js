@@ -58,8 +58,6 @@ exports.create = async (req, res) => {
     const existing = await Topic.findOne({ unit: unitId, topiccode });
     if (existing) return res.json({ success: false, message: "Topic code already exists for this unit" });
 
-    console.log({ exam: examId, subject: subId, unit: unitId, examcode: examCode, subjectcode: subCode, unitcode: unitCode, topiccode, topicname });
-
     const newTopic = await Topic.create({
       exam: examId,
       subject: subId,

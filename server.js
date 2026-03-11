@@ -243,7 +243,7 @@ const server = http.createServer(app);
 const wss = new WebSocket.Server({ server, path: "/logs" });
 
 server.listen(3000, () => {
-  console.log("Server running on http://localhost:3000");
+  logger.info("Server running on http://localhost:3000");
 });
 
 // Broadcast helper

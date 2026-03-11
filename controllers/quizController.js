@@ -130,7 +130,6 @@ exports.createOrder = async (req, res) => {
     examSessionObj.questions = questions;
     examSessionObj.startedAt = new Date();
 
-    console.log(examSessionObj);
     return res.render(
       `pages/${getDevice(req)}/quiz`,
       {

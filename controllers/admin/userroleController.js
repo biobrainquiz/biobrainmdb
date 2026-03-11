@@ -77,6 +77,7 @@ exports.addRole = async (req, res) => {
   }
 };
 
+
 exports.removeRole = async (req, res) => {
   try {
     const { userId, role: roleId } = req.body;

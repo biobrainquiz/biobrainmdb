@@ -11,7 +11,7 @@ exports.getProfile = async (req, res) => {
         const uname = req.session.user.username;
 
         // 🔹 Get User Details
-        const user = await User.findOne({ username: uname }).lean();
+        const user = await User.findOne({ username: uname }).populate("roles").lean();
 
         if (!user) {
             return res.redirect("/dashboard");

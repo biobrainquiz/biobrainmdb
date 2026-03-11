@@ -83,7 +83,6 @@ exports.create = async (req, res) => {
       marks: marks
     });
 
-    console.log(newQuestion);
     res.json({ success: true, question: newQuestion });
   } catch (err) {
     console.error(err);
