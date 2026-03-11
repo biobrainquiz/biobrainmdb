@@ -232,7 +232,7 @@ app.use((err, req, res, next) => {
   res.status(500).send("Something broke!");
 });
 
-const liveLogs = require("./utils/liveLogs");
+/*const liveLogs = require("./utils/liveLogs");
 
 const http = require("http");
 const WebSocket = require("ws");
@@ -264,7 +264,7 @@ app.get("/admin/logs/live", (req, res) => {
 setInterval(() => {
   const log = { time: new Date().toLocaleTimeString(), message: "Test log entry" };
   wss.broadcast(log);
-}, 5000);
+}, 5000);*/
 
 /* =========================================
    START SERVER
