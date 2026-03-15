@@ -46,9 +46,9 @@ class ExamSession {
 
         // questions & answers
         this.questions = []; // array of {questionId, text, options, selectedOption, correctOption, isCorrect, timeTaken}
-         this.questionsCount = count;
-        this.attemptNumber = 1;
+        this.questionsCount = count;
         this.answers = null; // { questionId: selectedOption }
+        this.attemptNumber = 1;
     }
 
     calculateScore() {

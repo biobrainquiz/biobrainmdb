@@ -255,23 +255,33 @@ async function UpdateAttemptedTable(userid, exampapercode, questions) {
 
 async function SaveResult(examSessionObj) {
 
-  console.log(examSessionObj);
+  const answers = examSessionObj.answers || {};
 
-  const resultQuestions = examSessionObj.questions.map(q => ({
-    questionId: q._id,
-    qno: q.qno,
-    question: q.question,
-    opt1: q.opt1,
-    opt2: q.opt2,
-    opt3: q.opt3,
-    opt4: q.opt4,
-    correctAnswer: q.answer,
-    userAnswer: q.userAnswer ?? null,
-    marks: q.marks || 1,
-    negativeMarks: q.negativeMarks || 0,
-    timeTaken: q.timeTaken || 0
-  }));
+  const resultQuestions = examSessionObj.questions.map(q => {
+    const userAnswer = answers[q._id.toString()] ?? -1;
+    return {
+      _id: q._id,
+      qno: q.qno,
 
+      question: q.question,
+
+      opt1: q.opt1,
+      opt2: q.opt2,
+      opt3: q.opt3,
+      opt4: q.opt4,
+
+      correctAnswer: q.answer,
+
+      userAnswer,
+
+      marks: q.marks || 1,
+      negativeMarks: q.negativeMarks || 0,
+
+      isCorrect: userAnswer === q.answer,
+
+      timeTaken: q.timeTaken || 0
+    };
+  });
 
   // ✅ Save result in DB
   const result = new Result({
@@ -311,7 +321,5 @@ async function SaveResult(examSessionObj) {
     topicStats: examSessionObj.topicStats,
     unitStats: examSessionObj.unitStats,
   });
-  console.log("--------------------");
-  console.log(result);
   await result.save();
 }
