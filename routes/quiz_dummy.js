@@ -12,12 +12,6 @@ router.get(
   quizController.prepareQuiz
 );
 
-// Submit Quiz
-router.post(
-  "/quiz/submit",
-  requireLogin,
-  quizController.submitQuiz
-);
 
 // Create Quiz Order and Start Quiz
 router.post(
@@ -25,5 +19,13 @@ router.post(
   requireLogin,
   quizController.createOrder
 );
+
+// Submit Quiz
+router.post(
+  "/quiz/submit",
+  requireLogin,
+  quizController.submitQuiz
+);
+
 module.exports = router;
 

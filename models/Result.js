@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const questionAttemptSchema = new mongoose.Schema({
 
   // Reference to original question
-  questionId: {
+  _id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Question",
     required: true

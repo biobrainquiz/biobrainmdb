@@ -3,7 +3,6 @@ const Subject = require("../../models/Subject");
 const Unit = require("../../models/Unit");
 const Topic = require("../../models/Topic");
 const Question = require("../../models/Question");
-const QuizResult = require("../../models/QuizResult");
 const Exam = require("../../models/Exam");
 const Payment = require("../../models/Payment"); // if exists
 const getDevice = require("../../utils/getDevice"); // if you use device-based views

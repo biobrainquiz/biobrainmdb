@@ -6,11 +6,12 @@ class ExamSession {
         this.subjectCode = subjectcode;
         this.unitCode = unitcode;
         this.topicCode = topiccode;
-        this.questionsCount = count;
+       
         this.difficulty = difficulty;
 
         this.userId = null;
         this.userName = null;
+        this.userEmail = null;
         this.exampaperCode = null;
         this.examName = null;
         this.subjectName = null;
@@ -21,8 +22,6 @@ class ExamSession {
         const now = new Date();
         this.examStartedAt = now.toISOString(); // e.g., "2026-03-08T12:18:07.123Z"
         this.examEndedAt = null; // will fill later
-
-        this.examEndedAt = null;
         this.duration = 0; // in seconds
 
         // results computation
@@ -47,13 +46,9 @@ class ExamSession {
 
         // questions & answers
         this.questions = []; // array of {questionId, text, options, selectedOption, correctOption, isCorrect, timeTaken}
+         this.questionsCount = count;
         this.attemptNumber = 1;
         this.answers = null; // { questionId: selectedOption }
-    }
-
-    addQuestion(questionObj) {
-        this.questions.push(questionObj);
-        this.totalQuestions = this.questions.length;
     }
 
     calculateScore() {
@@ -75,12 +70,12 @@ class ExamSession {
                 }
             }
         });
-        this.skipped = this.totalQuestions - this.attempted;
+        this.skipped = this.questionsCount - this.attempted;
         const negativeMarking = 0; // example negative marking per wrong answer 
         this.positiveMarks = this.right; // can multiply by marks per question
         this.negativeMarks = this.wrong * negativeMarking;
         this.finalScore = this.positiveMarks - this.negativeMarks;
-        this.percentage = (this.finalScore / this.totalQuestions) * 100;
+        this.percentage = (this.finalScore / this.questionsCount) * 100;
         this.accuracy = this.attempted ? (this.right / this.attempted) * 100 : 0;
     }
 
