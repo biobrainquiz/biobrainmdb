@@ -2,26 +2,26 @@
 class ExamSession {
     constructor({ examcode, subjectcode, unitcode, topiccode, count, difficulty } = {}) {
 
-        this.examCode = examcode;
-        this.subjectCode = subjectcode;
-        this.unitCode = unitcode;
-        this.topicCode = topiccode;
+        this.examcode = examcode;
+        this.subjectcode = subjectcode;
+        this.unitcode = unitcode;
+        this.topiccode = topiccode;
        
         this.difficulty = difficulty;
 
-        this.userId = null;
-        this.userName = null;
-        this.userEmail = null;
-        this.exampaperCode = null;
-        this.examName = null;
-        this.subjectName = null;
-        this.unitName = null;
-        this.topicName = null;
+        this.userid = null;
+        this.username = null;
+        this.useremail = null;
+        this.exampapercode = null;
+        this.examname = null;
+        this.subjectname = null;
+        this.unitname = null;
+        this.topicname = null;
 
 
         const now = new Date();
-        this.examStartedAt = now.toISOString(); // e.g., "2026-03-08T12:18:07.123Z"
-        this.examEndedAt = null; // will fill later
+        this.examstartedat = now.toISOString(); // e.g., "2026-03-08T12:18:07.123Z"
+        this.examendedat = null; // will fill later
         this.duration = 0; // in seconds
 
         // results computation
@@ -29,63 +29,63 @@ class ExamSession {
         this.right = 0;
         this.wrong = 0;
         this.skipped = 0;
-        this.positiveMarks = 0;
-        this.negativeMarks = 0;
-        this.finalScore = 0;
+        this.positivemarks = 0;
+        this.negativemarks = 0;
+        this.finalscore = 0;
         this.percentage = 0;
         this.accuracy = 0;
 
         // analytics / anti-cheating
-        this.tabSwitchCount = 0;
+        this.tabswitchcount = 0;
         this.device = "";
-        this.ipAddress = "";
+        this.ipaddress = "";
 
         // optional: topic/unit stats for dashboard
-        this.topicStats = [];
-        this.unitStats = [];
+        this.topicstats = [];
+        this.unitstats = [];
 
         // questions & answers
         this.questions = []; // array of {questionId, text, options, selectedOption, correctOption, isCorrect, timeTaken}
-        this.questionsCount = count;
+        this.questionscount = count;
         this.answers = null; // { questionId: selectedOption }
-        this.attemptNumber = 1;
+        this.attemptnumber = 1;
     }
 
     calculateScore() {
         this.attempted = Object.keys(this.answers || {}).length;
-        this.finalScore = 0;
+        this.finalscore = 0;
         this.right = 0;
         this.wrong = 0;
 
         // ✅ Evaluate answers
         this.questions.forEach(q => {
-            const userAns = this.answers[q._id];
+            const userans = this.answers[q._id];
 
-            if (userAns) {
-                if (userAns == q.answer) {
-                    this.finalScore += q.marks;
+            if (userans) {
+                if (userans == q.answer) {
+                    this.finalscore += q.marks;
                     this.right++;
                 } else {
                     this.wrong++;
                 }
             }
         });
-        this.skipped = this.questionsCount - this.attempted;
-        const negativeMarking = 0; // example negative marking per wrong answer 
-        this.positiveMarks = this.right; // can multiply by marks per question
-        this.negativeMarks = this.wrong * negativeMarking;
-        this.finalScore = this.positiveMarks - this.negativeMarks;
-        this.percentage = (this.finalScore / this.questionsCount) * 100;
+        this.skipped = this.questionscount - this.attempted;
+        const negativemarking = 0; // example negative marking per wrong answer 
+        this.positivemarks = this.right; // can multiply by marks per question
+        this.negativemarks = this.wrong * negativemarking;
+        this.finalscore = this.positivemarks - this.negativemarks;
+        this.percentage = (this.finalscore / this.questionscount) * 100;
         this.accuracy = this.attempted ? (this.right / this.attempted) * 100 : 0;
     }
 
     getExampaperCode() {
 
         const parts = [];
-        if (this.examCode) parts.push(this.examCode);
-        if (this.subjectCode) parts.push(this.subjectCode);
-        if (this.unitCode) parts.push(this.unitCode);
-        if (this.topicCode) parts.push(this.topicCode);
+        if (this.examcode) parts.push(this.examcode);
+        if (this.subjectcode) parts.push(this.subjectcode);
+        if (this.unitcode) parts.push(this.unitcode);
+        if (this.topiccode) parts.push(this.topiccode);
         return parts.join("_");
     }
 }

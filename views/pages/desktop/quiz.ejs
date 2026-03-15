@@ -170,21 +170,21 @@
 
 
     <div>
-      Hello, <%= examSession.userName %> 👋 | Examination Portal |
+      Hello, <%= examSession.username %> 👋 | Examination Portal |
         <span class="breadcrumb-wrapper">
           <span class="breadcrumb">
-            <%= examSession.examName %> &gt; <%= examSession.subjectName %> &gt;
+            <%= examSession.examname %> &gt; <%= examSession.subjectname %> &gt;
                 <span class="truncate" title="<%= examSession.unitName %>">
-                  <%= examSession.unitName.length> 15 ? examSession.unitName.slice(0, 15) + '...' : examSession.unitName
+                  <%= examSession.unitname.length> 15 ? examSession.unitname.slice(0, 15) + '...' : examSession.unitname
                     %>
                 </span> &gt;
                 <span class="truncate" title="<%= examSession.topicName %>">
-                  <%= examSession.topicName.length> 20 ? examSession.topicName.slice(0, 20) + '...' :
-                    examSession.topicName %>
+                  <%= examSession.topicname.length> 20 ? examSession.topicname.slice(0, 20) + '...' :
+                    examSession.topicname %>
                 </span>
           </span>
         </span>
-        <%= examSession.questionsCount %> Questions • <%= examSession.difficulty.charAt(0).toUpperCase() +
+        <%= examSession.questionscount %> Questions • <%= examSession.difficulty.charAt(0).toUpperCase() +
             examSession.difficulty.slice(1) %> Level
     </div>
 
@@ -344,10 +344,10 @@
               examSession,
               answers,
               questions: questions,
-              examcode: "<%= examSession.examCode %>",
-              subjectcode: "<%= examSession.subjectCode %>",
-              unitcode: "<%= examSession.unitCode %>",
-              topiccode: "<%= examSession.topicCode %>",
+              examcode: "<%= examSession.examcode %>",
+              subjectcode: "<%= examSession.subjectcode %>",
+              unitcode: "<%= examSession.unitcode %>",
+              topiccode: "<%= examSession.topiccode %>",
               difficulty: "<%= examSession.difficulty %>"
             }) // send answers + questions
           });

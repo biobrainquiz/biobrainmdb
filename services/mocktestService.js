@@ -24,19 +24,19 @@ exports.init = async (req, res) => {
     const username = req.session?.user?.username;
     const pageno = 1;
 
-    const { pageResult, totalPages } =
+    const { pageresult, totalpages } =
       await getResultsForPaging(username, examcode, subjectcode, pageno);
 
-    const resultsForGraph =
+    const resultsforgraph =
       await getResultsForGraph(username, examcode, subjectcode);
 
     const prepareTestObj = new PrepareTest({
       examcode,
       subjectcode,
-      pageResult,
+      pageresult,
       pageno,
-      totalPages,
-      resultsForGraph
+      totalpages,
+      resultsforgraph
     });
 
     return prepareTestObj;
@@ -48,10 +48,10 @@ exports.init = async (req, res) => {
     const prepareTestObj = new PrepareTest({
       examcode,
       subjectcode,
-      pageResult: [],
+      pageresult: [],
       pageno: 1,
-      totalPages: 1,
-      resultsForGraph: []
+      totalpages: 1,
+      resultsforgraph: []
     });
 
     return prepareTestObj;
@@ -59,26 +59,26 @@ exports.init = async (req, res) => {
 };
 
 async function getResultsForPaging(username, examcode, subjectcode, pageno) {
-  const pageLimit = 5;      // no.of records per page
+  const pagelimit = 5;      // no.of records per page
 
-  let resultCount = await Result.countDocuments({
+  let resultcount = await Result.countDocuments({
     username,
     examcode,
     subjectcode
   });
 
-  const totalPages = Math.ceil(resultCount / pageLimit);
+  const totalpages = Math.ceil(resultcount / pagelimit);
 
-  pageResult = await Result.find({
+  pageresult = await Result.find({
     username,
     examcode,
     subjectcode
-  }).sort({ createdAt: 1 })
-    .skip((pageno - 1) * pageLimit)
-    .limit(pageLimit)
+  }).sort({ createdat: 1 })
+    .skip((pageno - 1) * pagelimit)
+    .limit(pagelimit)
     .lean();
 
-  return { pageResult, totalPages };
+  return { pageresult, totalpages };
 }
 
 async function getResultsForGraph(username, examcode, subjectcode, pageno) {
@@ -86,7 +86,7 @@ async function getResultsForGraph(username, examcode, subjectcode, pageno) {
     username,
     examcode,
     subjectcode
-  }).sort({ createdAt: 1 });
+  }).sort({ createdat: 1 });
 
   return resultsForGraph;
 }
@@ -97,18 +97,33 @@ exports.createOrder = async (req, res) => {
     const questionCount = parseInt(count) || 10;
 
     const examSessionObj = new ExamSession({ examcode, subjectcode, unitcode, topiccode, count, difficulty });
-    examSessionObj.userId = req.session?.user?._id;
-    examSessionObj.userName = req.session?.user?.username;
-    examSessionObj.exampaperCode = examSessionObj.getExampaperCode();
-    examSessionObj.examName = await getExamName(examcode);
-    examSessionObj.subjectName = await getSubjectName(examcode, subjectcode);
-    examSessionObj.unitName = await getUnitName(examcode, subjectcode, unitcode);
-    examSessionObj.topicName = await getTopicName(examcode, subjectcode, unitcode, topiccode);
+    examSessionObj.userid = req.session?.user?._id;
+    examSessionObj.username = req.session?.user?.username;
+    examSessionObj.exampapercode = examSessionObj.getExampaperCode();
+    examSessionObj.examname = await getExamName(examcode);
+    examSessionObj.subjectname = await getSubjectName(examcode, subjectcode);
+    examSessionObj.unitname = await getUnitName(examcode, subjectcode, unitcode);
+    examSessionObj.topicname = await getTopicName(examcode, subjectcode, unitcode, topiccode);
+   
+    // 1️⃣ Capture client IP
+    const ipaddress = (req.headers['x-forwarded-for'] || req.socket.remoteAddress || '')
+      .split(',')[0]
+      .trim();
+
+    // 2️⃣ Capture device/browser info
+    const UAParser = require('ua-parser-js');
+    const parser = new UAParser(req.headers['user-agent']);
+    const result = parser.getResult();
+    const device = `${result.os.name || 'Unknown OS'} ${result.os.version || ''} / ${result.browser.name || 'Unknown Browser'} ${result.browser.version || ''}`;
+
+    // 3️⃣ Save into examSessionObj
+    examSessionObj.ipaddress = ipaddress;
+    examSessionObj.device = device;
 
     // Fetch random questions
-    const questions = await GetRandomQuestions(examSessionObj.userId, examSessionObj.exampaperCode, examSessionObj.examCode, examSessionObj.subjectCode, examSessionObj.unitCode, examSessionObj.topicCode, examSessionObj.difficulty, examSessionObj.questionsCount);
+    const questions = await GetRandomQuestions(examSessionObj.userid, examSessionObj.exampapercode, examSessionObj.examcode, examSessionObj.subjectcode, examSessionObj.unitcode, examSessionObj.topiccode, examSessionObj.difficulty, examSessionObj.questionscount);
     examSessionObj.questions = questions;
-    examSessionObj.startedAt = new Date();
+    examSessionObj.startedat = new Date();
     return examSessionObj;
 
   } catch (err) {
@@ -122,7 +137,7 @@ async function GetRandomQuestions(userid, exampapercode, examcode, subjectcode, 
   // get attempted question ids
   const attempt = await Attempt.findOne({ userid, exampapercode });
 
-  const attemptedIds = attempt ? attempt.questionids : [];
+  const attemptedids = attempt ? attempt.questionids : [];
 
   const qescount = parseInt(questioncount, 10);
   let questions = await Question.aggregate([
@@ -133,7 +148,7 @@ async function GetRandomQuestions(userid, exampapercode, examcode, subjectcode, 
         unitcode,
         topiccode,
         difficulty_level: difficulty,
-        _id: { $nin: attemptedIds }
+        _id: { $nin: attemptedids }
       }
     },
     { $sample: { size: qescount } }
@@ -142,7 +157,7 @@ async function GetRandomQuestions(userid, exampapercode, examcode, subjectcode, 
   // fallback if not enough questions
   if (questions.length < qescount) {
 
-    const moreQuestions = await Question.aggregate([
+    const morequestions = await Question.aggregate([
       {
         $match: {
           examcode,
@@ -155,7 +170,7 @@ async function GetRandomQuestions(userid, exampapercode, examcode, subjectcode, 
       { $sample: { size: qescount - questions.length } }
     ]);
 
-    questions = [...questions, ...moreQuestions];
+    questions = [...questions, ...morequestions];
   }
   return questions;
 }
@@ -166,30 +181,33 @@ exports.submit = async (req, res) => {
 
     const examSessionObj = new ExamSession();
 
-    examSessionObj.examCode = examSession.examCode;
-    examSessionObj.subjectCode = examSession.subjectCode;
-    examSessionObj.unitCode = examSession.unitCode;
-    examSessionObj.topicCode = examSession.topicCode;
-    examSessionObj.questionsCount = examSession.questionsCount;
+    examSessionObj.examcode = examSession.examcode;
+    examSessionObj.subjectcode = examSession.subjectcode;
+    examSessionObj.unitcode = examSession.unitcode;
+    examSessionObj.topiccode = examSession.topiccode;
+    examSessionObj.questionscount = examSession.questionscount;
     examSessionObj.difficulty = examSession.difficulty;
 
-    examSessionObj.userId = examSession.userId;
-    examSessionObj.userName = examSession.userName;
-    examSessionObj.userEmail = req.session.user?.email;
-    examSessionObj.exampaperCode = examSession.exampaperCode;
-    examSessionObj.examName = examSession.examName;
-    examSessionObj.subjectName = examSession.subjectName;
-    examSessionObj.unitName = examSession.unitName;
-    examSessionObj.topicName = examSession.topicName;
+    examSessionObj.userid = examSession.userid;
+    examSessionObj.username = examSession.username;
+    examSessionObj.useremail = req.session.user?.email;
+    examSessionObj.exampapercode = examSession.exampapercode;
+    examSessionObj.examname = examSession.examname;
+    examSessionObj.subjectname = examSession.subjectname;
+    examSessionObj.unitname = examSession.unitname;
+    examSessionObj.topicname = examSession.topicname;
+
+    examSessionObj.ipaddress = examSession.ipaddress;
+    examSessionObj.device = examSession.device;
 
     const now1 = new Date();
-    examSessionObj.examStartedAt = examSession.examStartedAt; // e.g., "2026-03-08T12:18:07.123Z"
-    examSessionObj.examEndedAt = now1.toISOString(); // e.g., "2026-03-08T12:18:07.123Z"
-    examSessionObj.duration = (new Date() - new Date(examSessionObj.examStartedAt)) / 1000;
+    examSessionObj.examstartedat = examSession.examstartedat; // e.g., "2026-03-08T12:18:07.123Z"
+    examSessionObj.examendedat = now1.toISOString(); // e.g., "2026-03-08T12:18:07.123Z"
+    examSessionObj.duration = (new Date() - new Date(examSessionObj.examstartedat)) / 1000;
 
     // questions & answers
     examSessionObj.questions = examSession.questions; // array of {questionId, text, options, selectedOption, correctOption, isCorrect, timeTaken}
-    examSessionObj.attemptNumber = 1;
+    examSessionObj.attemptnumber = 1;
     examSessionObj.answers = examSession.answers; // { questionId: selectedOption }
 
     // results computation
@@ -197,9 +215,9 @@ exports.submit = async (req, res) => {
     examSessionObj.right = 0;
     examSessionObj.wrong = 0;
     examSessionObj.skipped = 0;
-    examSessionObj.positiveMarks = 0;
-    examSessionObj.negativeMarks = 0;
-    examSessionObj.finalScore = 0;
+    examSessionObj.positivemarks = 0;
+    examSessionObj.negativemarks = 0;
+    examSessionObj.finalscore = 0;
     examSessionObj.percentage = 0;
     examSessionObj.accuracy = 0;
     examSessionObj.calculateScore();
@@ -212,23 +230,23 @@ exports.submit = async (req, res) => {
     // ✅ Save result in DB
     const newResult = new QuizResult({
       sno,
-      examdate: examSessionObj.examStartedAt,
-      examtime: examSessionObj.examEndedAt,
-      username: examSessionObj.userName,
-      examcode: examSessionObj.examCode,
-      subjectcode: examSessionObj.subjectCode,
-      unitcode: examSessionObj.unitCode,
-      topiccode: examSessionObj.topicCode,
+      examdate: examSessionObj.examstartedat,
+      examtime: examSessionObj.examendedat,
+      username: examSessionObj.username,
+      examcode: examSessionObj.examcode,
+      subjectcode: examSessionObj.subjectcode,
+      unitcode: examSessionObj.unitcode,
+      topiccode: examSessionObj.topiccode,
       difficulty: examSessionObj.difficulty,
-      noq: examSessionObj.questionsCount,
+      noq: examSessionObj.questionscount,
       attempted: examSessionObj.attempted,
       right: examSessionObj.right,
       wrong: examSessionObj.wrong,
-      score: examSessionObj.finalScore
+      score: examSessionObj.finalscore
     });
 
     await newResult.save();
-    await UpdateAttemptedTable(examSessionObj.userId, examSessionObj.exampaperCode, examSessionObj.questions);
+    await UpdateAttemptedTable(examSessionObj.userid, examSessionObj.exampapercode, examSessionObj.questions);
     return examSessionObj;
   } catch (err) {
     console.error("Quiz Submit Error:", err);
@@ -239,14 +257,14 @@ exports.submit = async (req, res) => {
 async function UpdateAttemptedTable(userid, exampapercode, questions) {
 
   // extract question ids
-  const attemptedQuestionIds = questions.map(q => q._id);
+  const attemptedquestionids = questions.map(q => q._id);
 
   // store attempted questions
   await Attempt.updateOne(
     { userid, exampapercode },
     {
       $addToSet: {
-        questionids: { $each: attemptedQuestionIds }
+        questionids: { $each: attemptedquestionids }
       }
     },
     { upsert: true }
@@ -255,10 +273,11 @@ async function UpdateAttemptedTable(userid, exampapercode, questions) {
 
 async function SaveResult(examSessionObj) {
 
+  console.log(examSessionObj);
   const answers = examSessionObj.answers || {};
 
   const resultQuestions = examSessionObj.questions.map(q => {
-    const userAnswer = answers[q._id.toString()] ?? -1;
+    const useranswer = answers[q._id.toString()] ?? -1;
     return {
       _id: q._id,
       qno: q.qno,
@@ -270,56 +289,56 @@ async function SaveResult(examSessionObj) {
       opt3: q.opt3,
       opt4: q.opt4,
 
-      correctAnswer: q.answer,
+      correctanswer: q.answer,
 
-      userAnswer,
+      useranswer,
 
       marks: q.marks || 1,
-      negativeMarks: q.negativeMarks || 0,
+      negativemarks: q.negativemarks || 0,
 
-      isCorrect: userAnswer === q.answer,
+      iscorrect: useranswer === q.answer,
 
-      timeTaken: q.timeTaken || 0
+      timetaken: q.timetaken || 0
     };
   });
 
   // ✅ Save result in DB
   const result = new Result({
     questions: resultQuestions,
-    questionsCount: resultQuestions.length,
+    questionscount: resultQuestions.length,
 
-    userId: examSessionObj.userId,
-    userName: examSessionObj.userName,
-    userEmail: examSessionObj.userEmail,
-    examCode: examSessionObj.examCode,
-    examName: examSessionObj.examName,
-    subjectCode: examSessionObj.subjectCode,
-    subjectName: examSessionObj.subjectName,
-    unitCode: examSessionObj.unitCode,
-    unitName: examSessionObj.unitName,
-    topicCode: examSessionObj.topicCode,
-    topicName: examSessionObj.topicName,
-    testCode: examSessionObj.exampaperCode,
+    userid: examSessionObj.userid,
+    username: examSessionObj.username,
+    useremail: examSessionObj.useremail,
+    examcode: examSessionObj.examcode,
+    examname: examSessionObj.examname,
+    subjectcode: examSessionObj.subjectcode,
+    subjectname: examSessionObj.subjectname,
+    unitcode: examSessionObj.unitcode,
+    unitname: examSessionObj.unitname,
+    topiccode: examSessionObj.topiccode,
+    topicname: examSessionObj.topicname,
+    testcode: examSessionObj.exampapercode,
     attempted: examSessionObj.attempted,
     right: examSessionObj.right,
     wrong: examSessionObj.wrong,
     skipped: examSessionObj.skipped,
-    positiveMarks: examSessionObj.positiveMarks,
-    negativeMarks: examSessionObj.negativeMarks,
-    finalScore: examSessionObj.finalScore,
+    positivemarks: examSessionObj.positivemarks,
+    negativemarks: examSessionObj.negativemarks,
+    finalccore: examSessionObj.finalscore,
     percentage: examSessionObj.percentage,
     accuracy: examSessionObj.accuracy,
 
-    testStartedAt: examSessionObj.examStartedAt,
-    testEndedAt: examSessionObj.examEndedAt,
+    testStartedAt: examSessionObj.examstartedat,
+    testEndedAt: examSessionObj.examendedat,
     duration: examSessionObj.duration,
 
-    attemptNumber: examSessionObj.attemptNumber,
-    tabSwitchCount: examSessionObj.tabSwitchCount,
+    attemptnumber: examSessionObj.attemptnumber,
+    tabswitchcount: examSessionObj.tabswitchcount,
     device: examSessionObj.device,
-    ipAddress: examSessionObj.ipAddress,
-    topicStats: examSessionObj.topicStats,
-    unitStats: examSessionObj.unitStats,
+    ipaddress: examSessionObj.ipaddress,
+    topicstats: examSessionObj.topicstats,
+    unitstats: examSessionObj.unitstats,
   });
-  await result.save();
+ await result.save();
 }
